@@ -6,6 +6,7 @@ import {
   FiMapPin,
   FiPhone,
   FiMail,
+  FiLinkedin
 } from "react-icons/fi";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { templeInfo } from "../../data/templeInfo";
@@ -84,23 +85,11 @@ export default function Footer() {
 " aria-label="Facebook" target="_blank"><FiLinkedin /></a>
               <a href="https://www.instagram.com/shreesiddhrudreshwarmahadev/" aria-label="Instagram" target="_blank"><FiInstagram /></a>
               <a href="https://www.youtube.com/@shrirudreshwar-n8k" aria-label="YouTube" target="_blank"><FiYoutube /></a>
-              <a href="#" aria-label="Facebook">
+              <a href="https://www.facebook.com/profile.php?id=61591869633994" target="_blank" aria-label="Facebook">
                 <FiFacebook />
               </a>
-              <a
-                href="https://www.instagram.com/shrirudreshwar/"
-                aria-label="Instagram"
-                target="_blank"
-              >
-                <FiInstagram />
-              </a>
-              <a
-                href="https://www.youtube.com/@shrirudreshwar-n8k"
-                aria-label="YouTube"
-                target="_blank"
-              >
-                <FiYoutube />
-              </a>
+            
+             
             </div>
           </div>
         </div>

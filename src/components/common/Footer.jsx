@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FiFacebook, FiInstagram, FiYoutube, FiMapPin, FiPhone, FiMail } from "react-icons/fi";
+import { FiFacebook, FiInstagram, FiYoutube, FiMapPin, FiPhone, FiMail, FiLinkedin } from "react-icons/fi";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { templeInfo } from "../../data/templeInfo";
 import SacredDivider from "./SacredDivider";
@@ -57,11 +57,12 @@ export default function Footer() {
           <div>
             <h4>Stay Connected</h4>
             <p style={{ color: "rgba(244,239,225,0.7)", marginBottom: 16 }}>
-              Follow the trust for daily darshan photos and updates.
+              Stay Connected for Daily Darshan, Temple Events & Spiritual Updates
             </p>
             <div className="footer-social">
-              <a href="#" aria-label="Facebook"><FiFacebook /></a>
-              <a href="https://www.instagram.com/shrirudreshwar/" aria-label="Instagram" target="_blank"><FiInstagram /></a>
+              <a href="https://www.linkedin.com/company/shree-rudreshwar-seva-sanstha-charitable-trust/about/?viewAsMember=true
+" aria-label="Facebook" target="_blank"><FiLinkedin /></a>
+              <a href="https://www.instagram.com/shreesiddhrudreshwarmahadev/" aria-label="Instagram" target="_blank"><FiInstagram /></a>
               <a href="https://www.youtube.com/@shrirudreshwar-n8k" aria-label="YouTube" target="_blank"><FiYoutube /></a>
             </div>
           </div>

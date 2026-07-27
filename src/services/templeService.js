@@ -10,6 +10,8 @@ import { eventsData } from "../data/eventsData";
 import { testimonialData } from "../data/testimonialData";
 import { homeGalleryPreview } from "../data/galleryData";
 import { newsData } from "../data/newsData";
+import { gaushalaStats, cowSponsorshipPlans } from "../data/gaushalaData";
+import { bhojanshalaStats, mealSponsorshipPlans } from "../data/bhojanshalaData";
 
 const resolve = (data, delay = 150) =>
   new Promise((res) => setTimeout(() => res(data), delay));
@@ -21,7 +23,12 @@ export const getDonationCategories = () => resolve(donationCategories);
 export const getSuggestedAmounts = () => resolve(suggestedAmounts);
 export const getPujas = () => resolve(pujaData);
 export const getPujaBySlug = (slug) => resolve(pujaData.find((p) => p.id === slug) || null);
-export const getUpcomingEvents = () => resolve(eventsData);
+export const getUpcomingEvents = () => resolve(eventsData.filter((e) => !e.isPast));
+export const getAllEvents = () => resolve(eventsData);
 export const getTestimonials = () => resolve(testimonialData);
 export const getHomeGalleryPreview = () => resolve(homeGalleryPreview);
 export const getLatestNews = () => resolve(newsData);
+export const getGaushalaStats = () => resolve(gaushalaStats);
+export const getCowSponsorshipPlans = () => resolve(cowSponsorshipPlans);
+export const getBhojanshalaStats = () => resolve(bhojanshalaStats);
+export const getMealSponsorshipPlans = () => resolve(mealSponsorshipPlans);

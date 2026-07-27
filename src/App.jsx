@@ -13,7 +13,9 @@ const PujaDetails = lazy(() => import("./pages/PujaDetails"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const MembershipDashboard = lazy(() => import("./pages/MembershipDashboard"));
-
+const Events = lazy(() => import ("./pages/Events"));
+const Contact = lazy(() => import('./pages/contact'));
+ 
 function App() {
   return (
     <AuthProvider>
@@ -29,7 +31,7 @@ function App() {
             <Route path={ROUTE_PATHS.DONATION} element={<ComingSoon title="Donation" />} />
             <Route path={ROUTE_PATHS.GAUSHALA} element={<ComingSoon title="Gaushala" />} />
             <Route path={ROUTE_PATHS.BHOJANSHALA} element={<ComingSoon title="Bhojanshala" />} />
-            <Route path={ROUTE_PATHS.EVENTS} element={<ComingSoon title="Events" />} />
+            <Route path={ROUTE_PATHS.EVENTS} element={<Events />} />
             <Route path={ROUTE_PATHS.CULTURAL_ACTIVITIES} element={<ComingSoon title="Cultural Activities" />} />
             <Route path={ROUTE_PATHS.GALLERY} element={<ComingSoon title="Gallery" />} />
             <Route path={ROUTE_PATHS.NEWS} element={<ComingSoon title="News" />} />
@@ -44,7 +46,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path={ROUTE_PATHS.CONTACT} element={<ComingSoon title="Contact Us" />} />
+            <Route path={ROUTE_PATHS.CONTACT} element={<Contact />} />
             <Route path="*" element={<ComingSoon title="Page Not Found" />} />
           </Route>
         </Routes>

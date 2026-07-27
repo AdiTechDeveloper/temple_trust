@@ -13,10 +13,10 @@ export const templeInfo = {
     { label: "Shayan Aarti", time: "8:45 PM" },
   ],
   address: {
-    line1: "Rudreshwar Dham, Nr. Ring Road",
-    line2: "Ahmedabad, Gujarat – 380015",
-    phone: "+91 98765 43210",
-    whatsapp: "+91 98765 43210",
+    line1: "Shree Siddh Rudreshwar Mahadev Mandir ,Soni ni chali, near Pujya Pramukh Swami Maharaj Marg",
+    line2: "Vishalpur, Ellisbridge, Ahmedabad, Gujarat 380009",
+    phone: "+91 96381 73094",
+    whatsapp: "+91 96381 73094",
     email: "info@rudreshwartrust.org",
   },
 };

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiHeart, FiUserPlus } from "react-icons/fi";
-import ctaBanner from "../../assets/images/home/cta-banner.jpg";
+import ctaBanner from "../../assets/images/home/cta_banner.png";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import SacredDivider from "../common/SacredDivider";
 import "./CTASection.css";
@@ -17,7 +17,7 @@ export default function CTASection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <SacredDivider />
+          {/* <SacredDivider /> */}
           <h2 className="section-heading" style={{ color: "var(--text-on-navy)", marginTop: 20 }}>
             Your Seva Becomes Someone's Blessing
           </h2>

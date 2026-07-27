@@ -1,0 +1,29 @@
+.cultural-activities { background: var(--bg-alt); }
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.activity-card {
+  text-align: center;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 34px 22px;
+  border: 1px solid var(--line);
+  transition: var(--transition);
+}
+.activity-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); }
+.activity-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+  color: var(--gold-light);
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+}
+.activity-card h4 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 8px; }
+.activity-card p { font-size: 0.86rem; }
+
+@media (max-width: 900px) { .activities-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .activities-grid { grid-template-columns: 1fr; } }

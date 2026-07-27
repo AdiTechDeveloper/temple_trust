@@ -1,0 +1,30 @@
+.seva-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.seva-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+.seva-card-image { position: relative; height: 280px; }
+.seva-card-image img { width: 100%; height: 100%; object-fit: cover; }
+.seva-icon-badge {
+  position: absolute; bottom: -26px; left: 28px;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--navy-deep);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: var(--shadow-card);
+  border: 3px solid var(--white);
+}
+.seva-card-body { padding: 44px 28px 28px; }
+.seva-card-body h3 { font-size: 1.5rem; margin-bottom: 12px; }
+.seva-card-body p { margin-bottom: 22px; }
+
+@media (max-width: 900px) { .seva-grid { grid-template-columns: 1fr; } }

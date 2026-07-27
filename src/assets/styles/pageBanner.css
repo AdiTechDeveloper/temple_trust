@@ -1,0 +1,19 @@
+.page-banner {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  padding: 120px 0 70px;
+}
+.page-banner-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(11,19,38,0.9), rgba(11,19,38,0.55));
+}
+.page-banner-content { position: relative; z-index: 2; }
+
+.puja-list-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+@media (max-width: 992px) { .puja-list-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .puja-list-grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,32 @@
+.welcome-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+.welcome-image-wrap { position: relative; }
+.welcome-image {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+.welcome-badge {
+  position: absolute;
+  bottom: -24px; right: -24px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+  border: 1px solid var(--gold);
+  color: var(--text-on-navy);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+.welcome-badge strong { display: block; font-family: var(--font-display); font-size: 1.9rem; color: var(--gold-light); }
+.welcome-badge span { font-size: 0.75rem; letter-spacing: 0.04em; color: rgba(244,239,225,0.8); }
+
+@media (max-width: 900px) {
+  .welcome-grid { grid-template-columns: 1fr; gap: 48px; }
+  .welcome-badge { right: 12px; }
+}

@@ -1,0 +1,24 @@
+.puja-preview { background: var(--bg-alt); }
+.puja-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.puja-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  border: 1px solid var(--line);
+  transition: var(--transition);
+  display: flex; flex-direction: column;
+}
+.puja-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); }
+.puja-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.puja-duration { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--text-muted); }
+.puja-price { font-family: var(--font-display); color: var(--saffron); font-size: 1.15rem; }
+.puja-card h4 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px; }
+.puja-card p { font-size: 0.88rem; margin-bottom: 20px; flex-grow: 1; }
+.puja-book-btn { justify-content: center; width: 100%; padding: 11px 18px; font-size: 0.85rem; }
+
+@media (max-width: 992px) { .puja-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .puja-grid { grid-template-columns: 1fr; } }

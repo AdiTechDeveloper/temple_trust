@@ -1,0 +1,21 @@
+.thought-strip {
+  background: linear-gradient(135deg, var(--navy-deep), var(--navy));
+  padding: 72px 0;
+  position: relative;
+  overflow: hidden;
+}
+.thought-strip::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 85% 20%, rgba(201,162,39,0.18), transparent 55%);
+}
+.thought-content { position: relative; max-width: 780px; margin: 0 auto; text-align: center; }
+.thought-om { font-family: var(--font-display); font-size: 2.4rem; color: var(--gold); display: block; margin-bottom: 18px; }
+.thought-quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+  color: var(--text-on-navy);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+.thought-attribution { color: var(--gold-light); font-size: 0.85rem; letter-spacing: 0.03em; }

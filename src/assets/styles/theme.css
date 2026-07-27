@@ -1,0 +1,198 @@
+/* =========================================================
+   SHREE SIDHH RUDRESHWAR MAHADEV TEMPLE TRUST
+   Global Design Tokens
+   Palette: Navy (primary) / Gold (secondary) / Saffron (accent) / Off-white (bg)
+   Display face: Marcellus (carved, classical, temple-inscription feel)
+   Body face: Manrope (clean, premium, highly legible)
+   ========================================================= */
+
+:root {
+  /* Core palette */
+  --navy-deep: #0b1f3a;
+  --navy: #12294f;
+  --navy-light: #1f3c6b;
+  --gold: #c9a227;
+  --gold-light: #e8c874;
+  --gold-pale: #f3e3b8;
+  --saffron: #e9762b;
+  --saffron-light: #f3a468;
+  --off-white: #fbf8f2;
+  --white: #ffffff;
+  --ink: #171512;
+  --ink-soft: #4a4741;
+  --line: #e8e1d2;
+
+  /* Semantic */
+  --bg-body: var(--off-white);
+  --bg-alt: #f3efe4;
+  --text-primary: var(--ink);
+  --text-muted: var(--ink-soft);
+  --text-on-navy: #f4efe1;
+
+  /* Typography */
+  --font-display: "Marcellus", "Georgia", serif;
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+
+  /* Layout */
+  --container-max: 1280px;
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 28px;
+  --shadow-soft: 0 20px 50px -25px rgba(11, 31, 58, 0.35);
+  --shadow-card: 0 12px 30px -12px rgba(11, 31, 58, 0.18);
+  --transition: 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg-body);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--navy-deep);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+p { margin: 0; line-height: 1.7; color: var(--text-muted); }
+
+a { text-decoration: none; color: inherit; }
+
+img { max-width: 100%; display: block; }
+
+button { font-family: var(--font-body); }
+
+.container-xl {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section { padding: 96px 0; }
+.section-tight { padding: 64px 0; }
+
+@media (max-width: 992px) {
+  .section { padding: 72px 0; }
+}
+@media (max-width: 576px) {
+  .section { padding: 56px 0; }
+  .container-xl { padding: 0 18px; }
+}
+
+/* Eyebrow label — used sparingly, only where content is genuinely a labeled category */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  margin-bottom: 14px;
+}
+.eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1.5px;
+  background: var(--saffron);
+  display: inline-block;
+}
+
+.section-heading {
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+  margin-bottom: 16px;
+}
+
+.section-sub {
+  max-width: 620px;
+  font-size: 1.02rem;
+}
+
+/* Signature divider motif — a fine gold trishul-and-flame linework mark used
+   between major sections instead of a generic straight rule */
+.sacred-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 auto;
+  width: fit-content;
+}
+.sacred-divider .line {
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.sacred-divider svg { flex-shrink: 0; }
+
+/* Buttons */
+.btn-temple {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.94rem;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.btn-primary-gold {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--navy-deep);
+  box-shadow: 0 10px 24px -8px rgba(201, 162, 39, 0.55);
+}
+.btn-primary-gold:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -10px rgba(201, 162, 39, 0.65); }
+
+.btn-outline-light {
+  background: transparent;
+  border-color: rgba(244, 239, 225, 0.5);
+  color: var(--text-on-navy);
+}
+.btn-outline-light:hover { background: rgba(244, 239, 225, 0.12); border-color: var(--text-on-navy); }
+
+.btn-saffron {
+  background: var(--saffron);
+  color: var(--white);
+  box-shadow: 0 10px 24px -8px rgba(233, 118, 43, 0.5);
+}
+.btn-saffron:hover { transform: translateY(-2px); background: #d9661d; }
+
+.btn-navy-outline {
+  background: transparent;
+  border-color: var(--navy);
+  color: var(--navy-deep);
+}
+.btn-navy-outline:hover { background: var(--navy-deep); color: var(--text-on-navy); }
+
+/* Glassmorphism utility — used only where it earns its place (floating info cards over hero) */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Focus visibility (accessibility floor) */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--saffron);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

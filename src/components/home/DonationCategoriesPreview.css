@@ -1,0 +1,28 @@
+.donation-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.donation-cat-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 30px 26px;
+  transition: var(--transition);
+}
+.donation-cat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); border-color: var(--gold-pale); }
+.donation-cat-icon {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-pale), var(--gold-light));
+  color: var(--navy-deep);
+  font-size: 1.4rem;
+  margin-bottom: 18px;
+}
+.donation-cat-card h4 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 10px; color: var(--navy-deep); }
+.donation-cat-card p { font-size: 0.9rem; margin-bottom: 16px; }
+.donation-cat-link { display: inline-flex; align-items: center; gap: 6px; color: var(--saffron); font-weight: 700; font-size: 0.86rem; }
+
+@media (max-width: 992px) { .donation-cat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .donation-cat-grid { grid-template-columns: 1fr; } }

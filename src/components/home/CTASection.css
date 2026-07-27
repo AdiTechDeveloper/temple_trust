@@ -1,0 +1,10 @@
+.cta-section {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  padding: 110px 0;
+  text-align: center;
+}
+.cta-overlay { position: absolute; inset: 0; background: rgba(11,19,38,0.82); }
+.cta-content { position: relative; z-index: 2; }
+.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }

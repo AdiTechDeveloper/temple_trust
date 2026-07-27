@@ -15,6 +15,8 @@ const Register = lazy(() => import("./pages/Register"));
 const MembershipDashboard = lazy(() => import("./pages/MembershipDashboard"));
 const Events = lazy(() => import("./pages/Events"));
 const Contact = lazy(() => import("./pages/contact"));
+const Bhojanshala = lazy(()=>import("./pages/Bhojanshala"));
+const Donation = lazy(()=> import('./pages/Donation'));
 
 const AboutTemple = lazy(() => import("./pages/AboutTemple"));
 const Gallery = lazy(() => import("./pages/Gallery"));
@@ -39,7 +41,7 @@ function App() {
             <Route path={ROUTE_PATHS.PUJA_DETAILS} element={<PujaDetails />} />
             <Route
               path={ROUTE_PATHS.DONATION}
-              element={<ComingSoon title="Donation" />}
+              element={<Donation />}
             />
             <Route
               path={ROUTE_PATHS.GAUSHALA}
@@ -47,7 +49,7 @@ function App() {
             />
             <Route
               path={ROUTE_PATHS.BHOJANSHALA}
-              element={<ComingSoon title="Bhojanshala" />}
+              element={<Bhojanshala />}
             />
             <Route path={ROUTE_PATHS.EVENTS} element={<Events />} />
             <Route

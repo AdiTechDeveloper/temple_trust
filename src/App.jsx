@@ -20,6 +20,7 @@ const Donation = lazy(()=> import('./pages/Donation'));
 
 const AboutTemple = lazy(() => import("./pages/AboutTemple"));
 const Gallery = lazy(() => import("./pages/Gallery"));
+const Gaushala = lazy(() => import("./pages/Gaushala"));
 
 function App() {
   return (
@@ -43,10 +44,7 @@ function App() {
               path={ROUTE_PATHS.DONATION}
               element={<Donation />}
             />
-            <Route
-              path={ROUTE_PATHS.GAUSHALA}
-              element={<ComingSoon title="Gaushala" />}
-            />
+            <Route path={ROUTE_PATHS.GAUSHALA} element={<Gaushala />} />
             <Route
               path={ROUTE_PATHS.BHOJANSHALA}
               element={<Bhojanshala />}

@@ -58,3 +58,9 @@
   .footer-brand { flex-direction: column; text-align: center; }
   .footer-brand h3 { text-align: center; }
 }
+
+.logo {
+  background-color: #fff;
+  padding: 5px 5px 5px 5px;
+  border-radius: 10px;
+}

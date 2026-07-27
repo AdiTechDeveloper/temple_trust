@@ -18,9 +18,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // NOTE: these currently simulate a network call. Once the Laravel API is live,
-  // replace the body with `await apiClient.post("/login", credentials)` etc. —
-  // the function signatures components call will not need to change.
   const login = useCallback(async ({ email, password }) => {
     setLoading(true);
     setError(null);

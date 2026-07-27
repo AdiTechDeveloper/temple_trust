@@ -24,13 +24,12 @@ export default function Navbar() {
   return (
     <header className={`site-navbar ${scrolled ? "is-scrolled" : ""}`}>
       <div className="container-2xl navbar-inner">
-        <Link to={ROUTE_PATHS.HOME} className="brand" onClick={() => setMobileOpen(false)}>
-        <img src="/about/logo.png"></img>
-          {/* <span className="brand-mark">श्री</span>
-          <span className="brand-text">
-            <strong>Sidhh Rudreshwar</strong>
-            <small>Mahadev Temple Trust</small>
-          </span> */}
+        <Link
+          to={ROUTE_PATHS.HOME}
+          className="brand"
+          onClick={() => setMobileOpen(false)}
+        >
+          <img src="/about/logo.png" />
         </Link>
 
         <nav className="desktop-nav" aria-label="Primary">
@@ -44,7 +43,10 @@ export default function Navbar() {
               >
                 {item.children ? (
                   <>
-                    <button className="nav-link-btn" aria-expanded={openSubmenu === item.label}>
+                    <button
+                      className="nav-link-btn"
+                      aria-expanded={openSubmenu === item.label}
+                    >
                       {item.label} <FiChevronDown size={14} />
                     </button>
                     <AnimatePresence>
@@ -66,7 +68,10 @@ export default function Navbar() {
                     </AnimatePresence>
                   </>
                 ) : (
-                  <NavLink to={item.path} className={({ isActive }) => (isActive ? "active" : "")}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) => (isActive ? "active" : "")}
+                  >
                     {item.label}
                   </NavLink>
                 )}
@@ -76,13 +81,23 @@ export default function Navbar() {
         </nav>
 
         <div className="navbar-actions">
-          <Link to={ROUTE_PATHS.DONATION} className="btn-temple btn-saffron nav-donate-btn">
+          <Link
+            to={ROUTE_PATHS.DONATION}
+            className="btn-temple btn-saffron nav-donate-btn"
+          >
             <FiHeart /> Donate
           </Link>
-          <Link to={ROUTE_PATHS.MEMBERSHIP_LOGIN} className="btn-temple btn-navy-outline nav-login-btn">
+          <Link
+            to={ROUTE_PATHS.MEMBERSHIP_LOGIN}
+            className="btn-temple btn-navy-outline nav-login-btn"
+          >
             Member Login
           </Link>
-          <button className="mobile-toggle" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+          <button
+            className="mobile-toggle"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
+          >
             <FiMenu size={26} />
           </button>
         </div>
@@ -98,8 +113,15 @@ export default function Navbar() {
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <div className="mobile-drawer-header">
-              <span className="brand-text"><strong>Menu</strong></span>
-              <button onClick={() => setMobileOpen(false)} aria-label="Close menu"><FiX size={26} /></button>
+              <span className="brand-text">
+                <strong>Menu</strong>
+              </span>
+              <button
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close menu"
+              >
+                <FiX size={26} />
+              </button>
             </div>
             <ul className="mobile-nav-list">
               {navData.map((item) => (
@@ -110,18 +132,32 @@ export default function Navbar() {
                       <ul>
                         {item.children.map((child) => (
                           <li key={child.label}>
-                            <NavLink to={child.path} onClick={() => setMobileOpen(false)}>{child.label}</NavLink>
+                            <NavLink
+                              to={child.path}
+                              onClick={() => setMobileOpen(false)}
+                            >
+                              {child.label}
+                            </NavLink>
                           </li>
                         ))}
                       </ul>
                     </details>
                   ) : (
-                    <NavLink to={item.path} onClick={() => setMobileOpen(false)}>{item.label}</NavLink>
+                    <NavLink
+                      to={item.path}
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {item.label}
+                    </NavLink>
                   )}
                 </li>
               ))}
             </ul>
-            <Link to={ROUTE_PATHS.DONATION} className="btn-temple btn-saffron w-100 justify-content-center" onClick={() => setMobileOpen(false)}>
+            <Link
+              to={ROUTE_PATHS.DONATION}
+              className="btn-temple btn-saffron w-100 justify-content-center"
+              onClick={() => setMobileOpen(false)}
+            >
               <FiHeart /> Donate Now
             </Link>
           </motion.div>

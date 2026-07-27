@@ -1,0 +1,14 @@
+.sponsorship-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 26px 24px;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+.sponsorship-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); }
+.sponsorship-price { font-family: var(--font-display); font-size: 1.4rem; color: var(--saffron); margin-bottom: 10px; }
+.sponsorship-card h4 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 10px; }
+.sponsorship-card p { font-size: 0.88rem; margin-bottom: 20px; flex-grow: 1; }
+.sponsorship-btn { justify-content: center; width: 100%; padding: 11px 16px; font-size: 0.85rem; }

@@ -6,7 +6,7 @@ import {
   FiMapPin,
   FiPhone,
   FiMail,
-  FiLinkedin
+  FiLinkedin,
 } from "react-icons/fi";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { templeInfo } from "../../data/templeInfo";
@@ -62,34 +62,65 @@ export default function Footer() {
           </div>
           <div>
             <h4>Contact</h4>
-            <ul className="plain">
+            <ul className="plain contact-list">
               <li>
-                <FiMapPin /> {templeInfo.address.line1},{" "}
-                {templeInfo.address.line2}
+                <span className="icon-wrap">
+                  <FiMapPin />
+                </span>
+                <span>
+                  {templeInfo.address.line1}, {templeInfo.address.line2}
+                </span>
               </li>
               <li>
-                <FiPhone /> {templeInfo.address.phone}
+                <span className="icon-wrap">
+                  <FiPhone />
+                </span>
+                <span>{templeInfo.address.phone}</span>
               </li>
               <li>
-                <FiMail /> {templeInfo.address.email}
+                <span className="icon-wrap">
+                  <FiMail />
+                </span>
+                <span>{templeInfo.address.email}</span>
               </li>
             </ul>
           </div>
           <div>
             <h4>Stay Connected</h4>
             <p style={{ color: "rgba(244,239,225,0.7)", marginBottom: 16 }}>
-              Stay Connected for Daily Darshan, Temple Events & Spiritual Updates
+              Stay Connected for Daily Darshan, Temple Events & Spiritual
+              Updates
             </p>
             <div className="footer-social">
-              <a href="https://www.linkedin.com/company/shree-rudreshwar-seva-sanstha-charitable-trust/about/?viewAsMember=true
-" aria-label="Facebook" target="_blank"><FiLinkedin /></a>
-              <a href="https://www.instagram.com/shreesiddhrudreshwarmahadev/" aria-label="Instagram" target="_blank"><FiInstagram /></a>
-              <a href="https://www.youtube.com/@shrirudreshwar-n8k" aria-label="YouTube" target="_blank"><FiYoutube /></a>
-              <a href="https://www.facebook.com/profile.php?id=61591869633994" target="_blank" aria-label="Facebook">
+              <a
+                href="https://www.facebook.com/profile.php?id=61591869633994"
+                target="_blank"
+                aria-label="Facebook"
+              >
                 <FiFacebook />
               </a>
-            
-             
+              <a
+                href="https://www.instagram.com/shreesiddhrudreshwarmahadev/"
+                aria-label="Instagram"
+                target="_blank"
+              >
+                <FiInstagram />
+              </a>
+              <a
+                href="https://www.youtube.com/@shrirudreshwar-n8k"
+                aria-label="YouTube"
+                target="_blank"
+              >
+                <FiYoutube />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/shree-rudreshwar-seva-sanstha-charitable-trust/about/?viewAsMember=true
+"
+                aria-label="Facebook"
+                target="_blank"
+              >
+                <FiLinkedin />
+              </a>
             </div>
           </div>
         </div>

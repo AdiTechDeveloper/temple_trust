@@ -1,0 +1,42 @@
+.amount-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.amount-chip {
+  padding: 13px 10px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--line);
+  background: var(--white);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--navy-deep);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.amount-chip:hover { border-color: var(--gold-pale); }
+.amount-chip.is-selected { border-color: var(--gold); background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--navy-deep); }
+
+.amount-custom-field label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--navy-deep); margin-bottom: 8px; }
+.amount-custom-input-wrap {
+  display: flex; align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.amount-custom-input-wrap span {
+  padding: 13px 14px;
+  background: var(--bg-alt);
+  color: var(--navy-deep);
+  font-weight: 700;
+}
+.amount-custom-input-wrap input {
+  flex: 1;
+  border: none;
+  padding: 13px 14px;
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+}
+.amount-custom-input-wrap input:focus { outline: none; }
+.amount-custom-input-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,162,39,0.15); }

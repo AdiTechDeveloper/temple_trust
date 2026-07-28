@@ -14,7 +14,7 @@ import SacredDivider from "./SacredDivider";
 import "./Footer.css";
 
 const quickLinks = [
-  { label: "About Trust", path: ROUTE_PATHS.ABOUT_TRUST },
+  { label: "About Us", path: ROUTE_PATHS.ABOUT_TEMPLE },
   { label: "Donation", path: ROUTE_PATHS.DONATION },
   { label: "Puja Booking", path: ROUTE_PATHS.PUJA_BOOKING },
   // { label: "Gaushala", path: ROUTE_PATHS.GAUSHALA },

@@ -3,7 +3,7 @@ import { ROUTE_PATHS } from "../routes/routePaths";
 export const navData = [
   { label: "Home", path: ROUTE_PATHS.HOME },
   {
-    label: "About", path:ROUTE_PATHS.ABOUT_TEMPLE
+    label: "About Us", path:ROUTE_PATHS.ABOUT_TEMPLE
     // children: [
     //   { label: "About Trust", path: ROUTE_PATHS.ABOUT_TRUST },
     //   { label: "About Temple", path: ROUTE_PATHS.ABOUT_TEMPLE },

@@ -1,6 +1,6 @@
 export const templeInfo = {
   name: "Shree Sidhh Rudreshwar Mahadev Temple",
-  trustName: "Sidhh Rudreshwar Seva Trust",
+  trustName: "Shree Rudreshwar Seva Sanstha & Charitable Trust",
   tagline: "Where Devotion Meets Service",
   darshanTimings: [
     { label: "Morning Darshan", time: "5:30 AM – 12:00 PM" },
@@ -17,7 +17,7 @@ export const templeInfo = {
     line2: "Vishalpur, Ellisbridge, Ahmedabad, Gujarat 380009",
     phone: "+91 96381 73094",
     whatsapp: "+91 96381 73094",
-    email: "info@rudreshwartrust.org",
+    email: "shreerudreshwarsevasanstha@gmail.com",
   },
 };
 

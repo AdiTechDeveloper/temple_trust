@@ -17,7 +17,7 @@ const quickLinks = [
   { label: "About Trust", path: ROUTE_PATHS.ABOUT_TRUST },
   { label: "Donation", path: ROUTE_PATHS.DONATION },
   { label: "Puja Booking", path: ROUTE_PATHS.PUJA_BOOKING },
-  { label: "Gaushala", path: ROUTE_PATHS.GAUSHALA },
+  // { label: "Gaushala", path: ROUTE_PATHS.GAUSHALA },
   { label: "Events", path: ROUTE_PATHS.EVENTS },
   { label: "Gallery", path: ROUTE_PATHS.GALLERY },
 ];

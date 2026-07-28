@@ -133,7 +133,7 @@ export default function Gaushala() {
       </section>
 
       {/* Volunteer CTA */}
-      <section className="section gaushala-cta">
+      {/* <section className="section gaushala-cta">
         <div className="container-xl" style={{ textAlign: "center" }}>
           <GiCow size={40} color="var(--gold)" style={{ marginBottom: 16 }} />
           <h2
@@ -159,7 +159,7 @@ export default function Gaushala() {
             <FiUsers /> Register as Volunteer
           </Link>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

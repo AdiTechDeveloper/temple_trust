@@ -17,8 +17,8 @@ export const navData = [
     children: [
       { label: "Gaushala", path: ROUTE_PATHS.GAUSHALA },
       { label: "Bhojanshala", path: ROUTE_PATHS.BHOJANSHALA },
-      { label: "Cultural Activities", path: ROUTE_PATHS.CULTURAL_ACTIVITIES },
-      { label: "Volunteer", path: ROUTE_PATHS.VOLUNTEER },
+      // { label: "Cultural Activities", path: ROUTE_PATHS.CULTURAL_ACTIVITIES },
+      // { label: "Volunteer", path: ROUTE_PATHS.VOLUNTEER },
     ],
   },
   { label: "Events", path: ROUTE_PATHS.EVENTS },

@@ -90,7 +90,7 @@ export default function Bhojanshala() {
         </div>
       </section>
 
-      <section className="section bhojanshala-cta">
+      {/* <section className="section bhojanshala-cta">
         <div className="container-xl" style={{ textAlign: "center" }}>
           <GiMeal size={40} color="var(--gold)" style={{ marginBottom: 16 }} />
           <h2 className="section-heading" style={{ color: "var(--text-on-navy)" }}>Volunteer in the Kitchen</h2>
@@ -101,7 +101,7 @@ export default function Bhojanshala() {
             <FiUsers /> Register as Volunteer
           </Link>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

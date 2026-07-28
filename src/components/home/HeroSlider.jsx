@@ -13,7 +13,7 @@ import "swiper/css/navigation";
 import "./HeroSlider.css";
 
 const slides = [
-  { image: heroOne, eyebrow: "Welcome to", title: "Shree Sidhh Rudreshwar Seva Sanstha & Charitable Trust", sub: "A sanctuary of devotion, service and community — open to every soul seeking Mahadev's blessings." },
+  { image: heroOne, eyebrow: "Welcome to", title: "Shree Rudreshwar Seva Sanstha & Charitable Trust", sub: "A sanctuary of devotion, service and community — open to every soul seeking Mahadev's blessings." },
   { image: heroTwo, eyebrow: "Daily Darshan", title: "Experience the Divine Blessings of Lord Shiva", sub: "Join Mangala Aarti, Rudrabhishek and daily darshan from anywhere in the world." },
   { image: heroThree, eyebrow: "Seva Beyond the Sanctum", title: "Annadan – The Greatest Service", sub: "Every meal served spreads compassion, dignity and blessings." },
 ];

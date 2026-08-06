@@ -88,3 +88,26 @@
   .desktop-nav, .nav-donate-btn, .nav-login-btn { display: none; }
   .mobile-toggle { display: block; }
 }
+
+.navbar-actions { display: flex; align-items: center; gap: 12px; }
+.nav-donate-btn, .nav-login-btn, .nav-join-btn { padding: 10px 20px; font-size: 0.85rem; }
+.nav-join-btn {
+  border-color: var(--gold);
+  color: var(--navy-deep);
+  position: relative;
+  animation: nav-join-pulse 2.6s ease-in-out infinite;
+}
+@keyframes nav-join-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,162,39,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(201,162,39,0); }
+}
+
+
+@media (max-width: 1200px) and (min-width: 992px) {
+  .nav-login-btn { display: none; }
+}
+
+@media (max-width: 991px) {
+  .desktop-nav, .nav-donate-btn, .nav-login-btn, .nav-join-btn { display: none; }
+  .mobile-toggle { display: block; }
+}

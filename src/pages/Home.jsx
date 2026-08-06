@@ -1,3 +1,4 @@
+
 import HeroSlider from "../components/home/HeroSlider";
 import QuickInfoBar from "../components/home/QuickInfoBar";
 import WelcomeSection from "../components/home/WelcomeSection";
@@ -15,10 +16,15 @@ import GalleryPreview from "../components/home/GalleryPreview";
 // import VideoGallery from "../components/home/VideoGallery";
 // import GoogleReviews from "../components/home/GoogleReviews";
 import CTASection from "../components/home/CTASection";
+import JoinUpdatesPopup from "../components/common/joinUpdates/JoinUpdatesPopup";
+
+
+
 
 export default function Home() {
   return (
     <>
+    
       <HeroSlider />
       <QuickInfoBar />
       <WelcomeSection />
@@ -36,6 +42,7 @@ export default function Home() {
       {/* <VideoGallery /> */}
       {/* <GoogleReviews /> */}
       <CTASection />
+      <JoinUpdatesPopup />
     </>
   );
 }

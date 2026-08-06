@@ -32,3 +32,19 @@ export const getGaushalaStats = () => resolve(gaushalaStats);
 export const getCowSponsorshipPlans = () => resolve(cowSponsorshipPlans);
 export const getBhojanshalaStats = () => resolve(bhojanshalaStats);
 export const getMealSponsorshipPlans = () => resolve(mealSponsorshipPlans);
+
+
+export const submitMemberUpdate = (payload) => {
+  return new Promise((res) => {
+    setTimeout(() => {
+      try {
+        const existing = JSON.parse(localStorage.getItem("temple_trust_member_updates") || "[]");
+        existing.push({ ...payload, submittedAt: new Date().toISOString() });
+        localStorage.setItem("temple_trust_member_updates", JSON.stringify(existing));
+      } catch {
+        // localStorage may be unavailable (e.g. private browsing) — safe to ignore for this dummy layer.
+      }
+      res({ success: true });
+    }, 900);
+  });
+};

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { FiMenu, FiX, FiChevronDown, FiHeart } from "react-icons/fi";
+import { FiMenu, FiX, FiChevronDown, FiHeart , FiBell} from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { navData } from "../../data/navData";
 import { ROUTE_PATHS } from "../../routes/routePaths";
+import { useJoinUpdates } from "../../context/JoinUpdatesContext";
 import "./Navbar.css";
 
 export default function Navbar() {
+   const { openPopup } = useJoinUpdates();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState(null);
@@ -81,6 +83,9 @@ export default function Navbar() {
         </nav>
 
         <div className="navbar-actions">
+          <button className="btn-temple btn-navy-outline nav-join-btn" onClick={openPopup}>
+                      <FiBell /> Join Us
+            </button>
           <Link
             to={ROUTE_PATHS.DONATION}
             className="btn-temple btn-saffron nav-donate-btn"
@@ -153,6 +158,13 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
+             <button
+                          className="btn-temple btn-navy-outline w-100 justify-content-center nav-join-btn"
+                          style={{ marginBottom: 10 }}
+                          onClick={() => { setMobileOpen(false); openPopup(); }}
+                        >
+                          <FiBell /> Join Us for Updates
+                        </button>
             <Link
               to={ROUTE_PATHS.DONATION}
               className="btn-temple btn-saffron w-100 justify-content-center"

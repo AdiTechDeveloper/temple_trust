@@ -28,7 +28,7 @@ export default function JoinUpdatesPopup() {
 
     const { isOpen, closePopup } = useJoinUpdates();
 
-  console.log("Popup isOpen:", isOpen);
+  // console.log("Popup isOpen:", isOpen);
   const [step, setStep] = useState("teaser"); // teaser | form | success
   const [form, setForm] = useState(initialForm);
   const [familyMembers, setFamilyMembers] = useState([]);

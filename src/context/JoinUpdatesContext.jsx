@@ -15,10 +15,10 @@ export function JoinUpdatesProvider({ children }) {
   // gentle enough not to feel like a spam popup, but visible on every page since
   // this provider + popup live inside MainLayout (wraps every route).
  useEffect(() => {
-  console.log("JoinUpdatesProvider mounted");
+  // console.log("JoinUpdatesProvider mounted");
 
   const alreadyShown = sessionStorage.getItem(SESSION_KEY);
-  console.log("alreadyShown:", alreadyShown);
+  // console.log("alreadyShown:", alreadyShown);
 
   if (alreadyShown) return;
 

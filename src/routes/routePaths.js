@@ -17,6 +17,7 @@ export const ROUTE_PATHS = {
   MEMBERSHIP_LOGIN: "/membership/login",
   MEMBERSHIP_REGISTER: "/membership/register",
   MEMBERSHIP_DASHBOARD: "/membership/dashboard",
+  MEMBERSHIP_PROFILE: "/membership/profile",
   CONTACT: "/contact",
 };
 

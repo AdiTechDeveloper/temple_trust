@@ -1,73 +1,238 @@
 import { createContext, useContext, useState, useCallback } from "react";
 
+import {
+  loginUser,
+  registerUser,
+  logoutUser,
+  updateProfile as updateProfileApi,
+} from "../services/authService";
+
 const AuthContext = createContext(null);
 
-const STORAGE_KEY = "temple_trust_member_session";
+const STORAGE_KEY = "temple_trust_auth";
 
-function readStoredUser() {
+function getStoredAuth() {
   try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    const data = localStorage.getItem(STORAGE_KEY);
+
+    if (!data) return null;
+
+    return JSON.parse(data);
   } catch {
     return null;
   }
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(readStoredUser);
+
+  const storedAuth = getStoredAuth();
+
+  const [user, setUser] = useState(storedAuth?.user || null);
+  const [token, setToken] = useState(storedAuth?.token || null);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const login = useCallback(async ({ email, password }) => {
-    setLoading(true);
-    setError(null);
-    try {
-      await new Promise((res) => setTimeout(res, 700));
-      if (!email || !password) throw new Error("Email and password are required.");
-      const fakeUser = { name: email.split("@")[0], email, memberSince: "2023" };
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(fakeUser));
-      setUser(fakeUser);
-      return fakeUser;
-    } catch (e) {
-      setError(e.message);
-      throw e;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+
+  // ===========================
+  // REGISTER
+  // ===========================
 
   const register = useCallback(async (formData) => {
+
     setLoading(true);
     setError(null);
+
     try {
-      await new Promise((res) => setTimeout(res, 900));
-      if (!formData.email || !formData.password) throw new Error("Please fill all required fields.");
-      const newUser = { name: formData.fullName, email: formData.email, memberSince: new Date().getFullYear().toString() };
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
-      setUser(newUser);
-      return newUser;
-    } catch (e) {
-      setError(e.message);
-      throw e;
+
+      const response = await registerUser(formData);
+
+      return response.data;
+
+    } catch (err) {
+
+      setError(
+        err.response?.data?.message ||
+        "Registration failed."
+      );
+
+      throw err;
+
     } finally {
+
       setLoading(false);
+
     }
+
   }, []);
 
-  const logout = useCallback(() => {
-    sessionStorage.removeItem(STORAGE_KEY);
-    setUser(null);
+
+  // ===========================
+  // LOGIN
+  // ===========================
+
+  const login = useCallback(async (credentials) => {
+
+    setLoading(true);
+    setError(null);
+
+    try {
+
+      const response = await loginUser(credentials);
+
+      const { user, token } = response.data;
+
+      // IMPORTANT
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          user,
+          token,
+        })
+      );
+
+      setUser(user);
+      setToken(token);
+
+      return response.data;
+
+    } catch (err) {
+
+      setError(
+        err.response?.data?.message ||
+        "Login failed."
+      );
+
+      throw err;
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
   }, []);
+
+
+  // ===========================
+  // UPDATE PROFILE
+  // ===========================
+
+  const updateProfile = useCallback(async (formData) => {
+
+    setLoading(true);
+    setError(null);
+
+    try {
+
+      const response = await updateProfileApi(formData);
+
+      console.log("PROFILE UPDATE RESPONSE:", response.data);
+
+      const updatedUser =
+        response.data?.user ||
+        response.data;
+
+      // Update React state
+      setUser(updatedUser);
+
+      // Get existing authentication
+      const stored = getStoredAuth();
+
+      // Update localStorage
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          user: updatedUser,
+          token: stored?.token || token,
+        })
+      );
+
+      return response.data;
+
+    } catch (err) {
+
+      console.error(
+        "Profile update error:",
+        err.response?.data || err
+      );
+
+      setError(
+        err.response?.data?.message ||
+        "Profile update failed."
+      );
+
+      throw err;
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  }, [token]);
+
+
+  // ===========================
+  // LOGOUT
+  // ===========================
+
+  const logout = useCallback(async () => {
+
+    try {
+
+      if (token) {
+        await logoutUser();
+      }
+
+    } catch (e) {
+
+      console.log("Logout API error:", e);
+
+    } finally {
+
+      localStorage.removeItem(STORAGE_KEY);
+
+      setUser(null);
+      setToken(null);
+    }
+
+  }, [token]);
+
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, register, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+
+        loading,
+        error,
+
+        register,
+        login,
+        updateProfile,
+        logout,
+
+        isAuthenticated: !!token,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
+
 }
 
+
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
-  return ctx;
+
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error(
+      "useAuth must be used inside AuthProvider"
+    );
+  }
+
+  return context;
 }

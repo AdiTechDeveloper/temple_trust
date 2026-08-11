@@ -13,10 +13,11 @@ const PujaDetails = lazy(() => import("./pages/PujaDetails"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const MembershipDashboard = lazy(() => import("./pages/MembershipDashboard"));
+const MembershipProfile = lazy(() => import("./pages/MembershipProfile"));
 const Events = lazy(() => import("./pages/Events"));
 const Contact = lazy(() => import("./pages/contact"));
-const Bhojanshala = lazy(()=>import("./pages/Bhojanshala"));
-const Donation = lazy(()=> import('./pages/Donation'));
+const Bhojanshala = lazy(() => import("./pages/Bhojanshala"));
+const Donation = lazy(() => import('./pages/Donation'));
 
 const AboutTemple = lazy(() => import("./pages/AboutTemple"));
 const Gallery = lazy(() => import("./pages/Gallery"));
@@ -102,6 +103,16 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MembershipDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+
+            <Route
+              path={ROUTE_PATHS.MEMBERSHIP_PROFILE}
+              element={
+                <ProtectedRoute>
+                  <MembershipProfile />
                 </ProtectedRoute>
               }
             />

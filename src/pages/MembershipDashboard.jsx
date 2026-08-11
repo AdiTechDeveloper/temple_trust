@@ -1,14 +1,22 @@
 import { motion } from "framer-motion";
 import { FiDownload, FiCalendar, FiHeart, FiLogOut, FiUser } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
+import { replace, useNavigate } from "react-router-dom";
 import SectionHeading from "../components/common/SectionHeading";
 import "./MembershipDashboard.css";
+import { ROUTE_PATHS } from "../routes/routePaths";
+
+
+import { Link } from "react-router-dom";
+
 
 const donationHistory = [
   { id: "DN-1042", date: "2026-06-12", category: "Bhojanshala", amount: 2100, receipt: true },
   { id: "DN-0988", date: "2026-05-01", category: "Gaushala", amount: 1101, receipt: true },
   { id: "DN-0871", date: "2026-03-04", category: "General Donation", amount: 5100, receipt: true },
 ];
+
+
 
 const pujaHistory = [
   { id: "PJ-221", puja: "Rudrabhishek", date: "2026-06-20", status: "Completed" },
@@ -17,24 +25,34 @@ const pujaHistory = [
 
 export default function MembershipDashboard() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await logout();
+    navigate(ROUTE_PATHS.MEMBERSHIP_LOGIN, { replace: true });
+  };
+
 
   return (
     <section className="section dashboard-section">
       <div className="container-xl">
         <div className="dashboard-header">
           <div className="dashboard-profile">
-            <span className="dashboard-avatar"><FiUser size={26} /></span>
+            {/* <span className="dashboard-avatar"><FiUser size={26} /></span> */}
             <div>
               <h2 style={{ fontSize: "1.6rem" }}>Welcome, {user?.name || "Devotee"}</h2>
               <p>{user?.email} · Member since {user?.memberSince}</p>
             </div>
+              <Link to={ROUTE_PATHS.MEMBERSHIP_PROFILE} className="btn-temple btn-navy-outline">
+          <FiUser /> Edit Profile
+        </Link>
           </div>
-          <button className="btn-temple btn-navy-outline" onClick={logout}>
+          <button className="btn-temple btn-navy-outline" onClick={handleLogout}>
             <FiLogOut /> Sign Out
           </button>
+          
         </div>
-
-        <motion.div
+      
+        {/* <motion.div
           className="membership-card"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -58,7 +76,7 @@ export default function MembershipDashboard() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         <SectionHeading align="left" eyebrow="History" title="Donation History" />
         <div className="dashboard-table-wrap">
@@ -100,8 +118,8 @@ export default function MembershipDashboard() {
         </div>
 
         <div className="dashboard-cta-row">
-          <a href="#" className="btn-temple btn-primary-gold"><FiHeart /> Make a New Donation</a>
-          <a href="#" className="btn-temple btn-navy-outline"><FiCalendar /> Book Another Puja</a>
+          <a href="/donation" className="btn-temple btn-primary-gold"><FiHeart /> Make a New Donation</a>
+          <a href="/puja-booking" className="btn-temple btn-navy-outline"><FiCalendar /> Book Another Puja</a>
         </div>
       </div>
     </section>

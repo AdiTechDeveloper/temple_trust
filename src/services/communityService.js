@@ -1,5 +1,5 @@
-    import api from "./api.js";
+import api from "./api.js";
 
-    export const joinCommunity = (data) => {
-        return api.post("/community/join", data);
-    };
+export const joinCommunity = (data) => {
+  return api.post("/register", data);
+};

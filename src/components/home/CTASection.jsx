@@ -5,10 +5,16 @@ import ctaBanner from "../../assets/images/home/cta_banner.png";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import SacredDivider from "../common/SacredDivider";
 import "./CTASection.css";
+import { useJoinUpdates } from "../../context/JoinUpdatesContext";
 
 export default function CTASection() {
+  const { openPopup } = useJoinUpdates();
+
   return (
-    <section className="cta-section" style={{ backgroundImage: `url(${ctaBanner})` }}>
+    <section
+      className="cta-section"
+      style={{ backgroundImage: `url(${ctaBanner})` }}
+    >
       <div className="cta-overlay" />
       <div className="container-xl cta-content">
         <motion.div
@@ -18,20 +24,37 @@ export default function CTASection() {
           transition={{ duration: 0.6 }}
         >
           {/* <SacredDivider /> */}
-          <h2 className="section-heading" style={{ color: "var(--text-on-navy)", marginTop: 20 }}>
+          <h2
+            className="section-heading"
+            style={{ color: "var(--text-on-navy)", marginTop: 20 }}
+          >
             Your Seva Becomes Someone's Blessing
           </h2>
-          <p style={{ color: "rgba(244,239,225,0.82)", maxWidth: 560, margin: "0 auto 32px" }}>
-            Whether through a donation, a puja booking, or your time as a volunteer — every contribution
-            sustains this temple's service to the community.
+          <p
+            style={{
+              color: "rgba(244,239,225,0.82)",
+              maxWidth: 560,
+              margin: "0 auto 32px",
+            }}
+          >
+            Whether through a donation, a puja booking, or your time as a
+            volunteer — every contribution sustains this temple's service to the
+            community.
           </p>
           <div className="cta-buttons">
-            <Link to={ROUTE_PATHS.DONATION} className="btn-temple btn-primary-gold">
+            <Link
+              to={ROUTE_PATHS.DONATION}
+              className="btn-temple btn-primary-gold"
+            >
               <FiHeart /> Donate Now
             </Link>
-            <Link to={ROUTE_PATHS.MEMBERSHIP_REGISTER} className="btn-temple btn-outline-light">
+            <button
+              type="button"
+              onClick={openPopup}
+              className="btn-temple btn-outline-light"
+            >
               <FiUserPlus /> Become a Member
-            </Link>
+            </button>
           </div>
         </motion.div>
       </div>

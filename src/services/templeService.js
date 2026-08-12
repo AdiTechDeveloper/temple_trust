@@ -1,11 +1,11 @@
 // Data-access layer. Every function currently resolves from local dummy data
 // wrapped in a Promise so components already call it exactly as they will
 // once wired to the Laravel API (just swap the function body for apiClient calls).
-
+import api from "./api";
 import { templeInfo, todaysThought } from "../data/templeInfo";
 import { statsData } from "../data/statsData";
 import { donationCategories, suggestedAmounts } from "../data/donationData";
-import { pujaData } from "../data/pujaData";
+// import { pujaData } from "../data/pujaData";
 import { eventsData } from "../data/eventsData";
 import { testimonialData } from "../data/testimonialData";
 import { homeGalleryPreview } from "../data/galleryData";
@@ -21,8 +21,41 @@ export const getTodaysThought = () => resolve(todaysThought);
 export const getStats = () => resolve(statsData);
 export const getDonationCategories = () => resolve(donationCategories);
 export const getSuggestedAmounts = () => resolve(suggestedAmounts);
-export const getPujas = () => resolve(pujaData);
-export const getPujaBySlug = (slug) => resolve(pujaData.find((p) => p.id === slug) || null);
+
+
+// export const getPujas = () => resolve(pujaData);
+// export const getPujaBySlug = (slug) => resolve(pujaData.find((p) => p.id === slug) || null);
+
+export const getPujas = async () => {
+    try {
+        const response = await api.get("/poojas");
+
+        return response.data.poojas || [];
+    } catch (error) {
+        console.error("Failed to fetch Poojas:", error);
+        throw error;
+    }
+};
+
+export const getPujaBySlug = async (slug) => {
+    try {
+        const response = await api.get("/poojas");
+
+        const pujas = response.data.poojas || [];
+
+        const puja = pujas.find(
+            (item) =>
+                String(item.id) === String(slug) ||
+                String(item.slug) === String(slug)
+        );
+
+        return puja || null;
+    } catch (error) {
+        console.error("Failed to fetch Puja details:", error);
+        throw error;
+    }
+};
+
 export const getUpcomingEvents = () => resolve(eventsData.filter((e) => !e.isPast));
 export const getAllEvents = () => resolve(eventsData);
 export const getTestimonials = () => resolve(testimonialData);

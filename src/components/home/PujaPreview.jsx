@@ -36,8 +36,8 @@ export default function PujaPreview() {
                 <span className="puja-duration"><FiClock size={13} /> {puja.duration}</span>
                 <span className="puja-price">₹{puja.price.toLocaleString("en-IN")}</span>
               </div>
-              <h4>{puja.title}</h4>
-              <p>{puja.description}</p>
+              <h4>{puja.name}</h4>
+              <p>{puja.short_description}</p>
               <Link to={pujaDetailsPath(puja.id)} className="btn-temple btn-navy-outline puja-book-btn">
                 Book Now
               </Link>

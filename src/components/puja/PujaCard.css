@@ -8,7 +8,7 @@
 .puja-list-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); }
 .puja-list-image { position: relative; height: 190px; }
 .puja-list-image img { width: 100%; height: 100%; object-fit: cover; }
-.puja-list-price {
+/* .puja-list-price {
   position: absolute; top: 14px; right: 14px;
   background: rgba(11,19,38,0.85);
   color: var(--gold-light);
@@ -16,10 +16,48 @@
   border-radius: 999px;
   font-family: var(--font-display);
   font-size: 0.95rem;
-}
+} */
 .puja-list-body { padding: 22px; }
 .puja-list-body h4 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 8px; }
 .puja-list-body p { font-size: 0.87rem; margin-bottom: 18px; min-height: 62px; }
 .puja-list-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; }
 .puja-list-duration { display: flex; align-items: center; gap: 5px; font-size: 0.8rem; color: var(--text-muted); }
 .puja-list-link { display: flex; align-items: center; gap: 5px; color: var(--saffron); font-weight: 700; font-size: 0.84rem; }
+
+
+
+.puja-list-price {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+
+    background: rgba(0, 0, 0, 0.75);
+    /* color: #fff; */
+    color: var(--gold-light);
+
+    padding: 7px 10px;
+    border-radius: 8px;
+
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.puja-old-price {
+    font-size: 11px;
+    /* color: #ccc; */
+     color: var(--gold-light);
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+.puja-offer-price {
+    font-size: 16px;
+    /* color: #fff; */
+     color: var(--gold-light);
+    font-weight: 700;
+}

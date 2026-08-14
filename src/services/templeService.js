@@ -81,3 +81,42 @@ export const submitMemberUpdate = (payload) => {
     }, 900);
   });
 };
+
+// ===============================
+// VIDEOS
+// ===============================
+export const getVideos = async () => {
+    try {
+        const response = await api.get("/videos");
+
+        console.log("VIDEO API RESPONSE:", response.data);
+
+        const videos =
+            response.data.videos ||
+            response.data.video ||
+            [];
+
+        console.log("VIDEOS SENT TO COMPONENT:", videos);
+
+        return Array.isArray(videos) ? videos : [];
+
+    } catch (error) {
+        console.error("Failed to fetch videos:", error);
+        console.error("Status:", error.response?.status);
+        console.error("Data:", error.response?.data);
+
+        throw error;
+    }
+};
+
+
+export const getVideoBySlug = async (slug) => {
+    try {
+        const response = await api.get(`/videos/${slug}`);
+
+        return response.data.video || null;
+    } catch (error) {
+        console.error("Failed to fetch video:", error);
+        throw error;
+    }
+};

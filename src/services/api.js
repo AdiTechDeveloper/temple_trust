@@ -105,7 +105,6 @@ export const getPujas = async () => {
             "Status:",
             error.response?.status
         );
-
         console.error(
             "Response:",
             error.response?.data

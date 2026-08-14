@@ -16,6 +16,7 @@ import GalleryPreview from "../components/home/GalleryPreview";
 // import GoogleReviews from "../components/home/GoogleReviews";
 import CTASection from "../components/home/CTASection";
 import JoinUpdatesPopup from "../components/common/joinUpdates/JoinUpdatesPopup";
+import HomeVideos from "../pages/HomeVideos";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       <HeroSlider />
       <QuickInfoBar />
       <WelcomeSection />
+      <HomeVideos />
       <TodaysThought />
       <StatsCounter />
       <DonationCategoriesPreview />

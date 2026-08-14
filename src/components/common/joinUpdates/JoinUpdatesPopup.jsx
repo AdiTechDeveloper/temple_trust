@@ -428,7 +428,7 @@ export default function JoinUpdatesPopup() {
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
-                        <option value="PNS">Preffer Not to Say</option>
+                        <option value="PNS">Prefer Not to Say</option>
                       </select>
                     </div>
 

@@ -15,6 +15,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import SectionHeading from "../components/common/SectionHeading";
 import { updateProfile } from "../services/authService";
+import { BASE_URL, STORAGE_URL } from "../config/api";
 import "./MembershipProfile.css";
 
 const emptyForm = {
@@ -42,18 +43,16 @@ const getProfilePhotoUrl = (photo) => {
 
   // Laravel already returned /storage/...
   if (photo.startsWith("/storage/")) {
-    return `http://127.0.0.1:8000${photo}`;
+    return `${BASE_URL}${photo}`;
   }
 
   // Normal Laravel stored path:
   // profile_photos/filename.jpg
-  return `http://127.0.0.1:8000/storage/${photo}`;
+  return `${STORAGE_URL}${photo}`;
 };
-
 
 export default function MembershipProfile() {
   const { user, updateProfile } = useAuth();
-
 
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState(emptyForm);
@@ -170,86 +169,52 @@ export default function MembershipProfile() {
   */
 
   const handleSave = async (e) => {
-
     e.preventDefault();
 
     setSaving(true);
     setErrors({});
 
     try {
-
       const formData = new FormData();
 
       Object.keys(form).forEach((key) => {
-
         if (key !== "profile_photo") {
-          formData.append(
-            key,
-            form[key] || ""
-          );
+          formData.append(key, form[key] || "");
         }
-
       });
 
       if (profilePhoto) {
-        formData.append(
-          "profile_photo",
-          profilePhoto
-        );
+        formData.append("profile_photo", profilePhoto);
       }
-
 
       console.log("Sending profile update...");
 
-
       const response = await updateProfile(formData);
 
-
-      console.log(
-        "Profile update response:",
-        response
-      );
-
+      console.log("Profile update response:", response);
 
       setIsEditing(false);
 
       setProfilePhoto(null);
 
-
       alert(
         response?.message ||
-        response?.data?.message ||
-        "Profile updated successfully."
+          response?.data?.message ||
+          "Profile updated successfully.",
       );
-
-
     } catch (error) {
-
-      console.error(
-        "Profile update error:",
-        error
-      );
-
+      console.error("Profile update error:", error);
 
       if (error.response?.status === 422) {
-
-        setErrors(
-          error.response.data.errors || {}
-        );
-
+        setErrors(error.response.data.errors || {});
       } else {
-
         alert(
           error.response?.data?.message ||
-          "Unable to update profile. Please try again."
+            "Unable to update profile. Please try again.",
         );
-
       }
-
     } finally {
-
       setSaving(false);
-
     }
   };
 
@@ -295,25 +260,21 @@ export default function MembershipProfile() {
   }
 
   const completedFields = completionFields.filter(
-    (field) => field !== null && field !== undefined && field !== ""
+    (field) => field !== null && field !== undefined && field !== "",
   ).length;
 
   const completionPercentage = Math.round(
-    (completedFields / completionFields.length) * 100
+    (completedFields / completionFields.length) * 100,
   );
 
   return (
     <section className="section profile-section">
       <div className="container-xl">
-
         {/* ================= HEADER ================= */}
 
         <div className="profile-header">
-
           <div className="profile-header-left">
-
             <div className="profile-avatar-wrapper">
-
               {previewPhoto ? (
                 <img
                   src={previewPhoto}
@@ -330,10 +291,7 @@ export default function MembershipProfile() {
               )}
 
               {isEditing && (
-                <label
-                  htmlFor="profile_photo"
-                  className="profile-camera-btn"
-                >
+                <label htmlFor="profile_photo" className="profile-camera-btn">
                   <FiCamera size={15} />
 
                   <input
@@ -345,13 +303,10 @@ export default function MembershipProfile() {
                   />
                 </label>
               )}
-
             </div>
 
             <div>
-              <h2 style={{ fontSize: "1.6rem" }}>
-                {user?.name || "Devotee"}
-              </h2>
+              <h2 style={{ fontSize: "1.6rem" }}>{user?.name || "Devotee"}</h2>
 
               <p>
                 {user?.email || "No email"} · Member since{" "}
@@ -360,7 +315,6 @@ export default function MembershipProfile() {
                   : user?.memberSince || "—"}
               </p>
             </div>
-
           </div>
 
           {!isEditing ? (
@@ -409,7 +363,6 @@ export default function MembershipProfile() {
               Cancel
             </button>
           )}
-
         </div>
 
         {/* ================= PROFILE COMPLETION ================= */}
@@ -457,7 +410,6 @@ export default function MembershipProfile() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-
             <SectionHeading
               align="left"
               eyebrow="Personal Information"
@@ -465,7 +417,6 @@ export default function MembershipProfile() {
             />
 
             <div className="profile-details-grid">
-
               <ProfileDetail
                 icon={<FiUser />}
                 label="Full Name"
@@ -534,9 +485,7 @@ export default function MembershipProfile() {
                 label="Pincode"
                 value={user?.pincode}
               />
-
             </div>
-
           </motion.div>
         )}
 
@@ -550,7 +499,6 @@ export default function MembershipProfile() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-
             <SectionHeading
               align="left"
               eyebrow="Personal Information"
@@ -560,7 +508,6 @@ export default function MembershipProfile() {
             {/* Name + Email */}
 
             <div className="form-row">
-
               <ProfileInput
                 label="Full Name"
                 icon={<FiUser size={14} />}
@@ -568,7 +515,6 @@ export default function MembershipProfile() {
                 value={form.name}
                 onChange={handleChange}
                 error={errors.name}
-              
               />
 
               <ProfileInput
@@ -581,13 +527,11 @@ export default function MembershipProfile() {
                 error={errors.email}
                 readOnly
               />
-
             </div>
 
             {/* Mobile + Gender */}
 
             <div className="form-row">
-
               <ProfileInput
                 label="Mobile Number"
                 icon={<FiPhone size={14} />}
@@ -619,13 +563,11 @@ export default function MembershipProfile() {
 
                 <FieldError error={errors.gender} />
               </div>
-
             </div>
 
             {/* DOB + Marital Status */}
 
             <div className="form-row">
-
               <div className="form-field">
                 <label htmlFor="dob">
                   <FiCalendar size={14} />
@@ -663,7 +605,6 @@ export default function MembershipProfile() {
 
                 <FieldError error={errors.marital_status} />
               </div>
-
             </div>
 
             {/* Anniversary */}
@@ -710,7 +651,6 @@ export default function MembershipProfile() {
             {/* City + State */}
 
             <div className="form-row">
-
               <ProfileInput
                 label="City"
                 icon={<FiMapPin size={14} />}
@@ -728,7 +668,6 @@ export default function MembershipProfile() {
                 onChange={handleChange}
                 error={errors.state}
               />
-
             </div>
 
             {/* Pincode */}
@@ -768,9 +707,7 @@ export default function MembershipProfile() {
                 onChange={handlePhotoChange}
               />
 
-              <small>
-                JPG, PNG or WEBP. Maximum size 2 MB.
-              </small>
+              <small>JPG, PNG or WEBP. Maximum size 2 MB.</small>
 
               <FieldError error={errors.profile_photo} />
             </div>
@@ -786,15 +723,12 @@ export default function MembershipProfile() {
 
               {saving ? "Saving..." : "Save Profile"}
             </button>
-
           </motion.form>
         )}
-
       </div>
     </section>
   );
 }
-
 
 /*
 |--------------------------------------------------------------------------
@@ -805,24 +739,18 @@ export default function MembershipProfile() {
 function ProfileDetail({ icon, label, value, wide = false }) {
   return (
     <div
-      className={`profile-detail-card ${wide ? "profile-detail-card-wide" : ""
-        }`}
+      className={`profile-detail-card ${
+        wide ? "profile-detail-card-wide" : ""
+      }`}
     >
-      <span className="profile-detail-icon">
-        {icon}
-      </span>
+      <span className="profile-detail-icon">{icon}</span>
 
-      <span className="profile-detail-label">
-        {label}
-      </span>
+      <span className="profile-detail-label">{label}</span>
 
-      <strong>
-        {value || "—"}
-      </strong>
+      <strong>{value || "—"}</strong>
     </div>
   );
 }
-
 
 /*
 |--------------------------------------------------------------------------
@@ -843,7 +771,6 @@ function ProfileInput({
 }) {
   return (
     <div className="form-field">
-
       <label htmlFor={name}>
         {icon}
         {label}
@@ -856,15 +783,13 @@ function ProfileInput({
         value={value}
         onChange={onChange}
         maxLength={maxLength}
-        readOnly = {readOnly}
+        readOnly={readOnly}
       />
 
       <FieldError error={error} />
-
     </div>
   );
 }
-
 
 /*
 |--------------------------------------------------------------------------

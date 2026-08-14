@@ -10,6 +10,25 @@ const api = axios.create({
 
 
 api.interceptors.request.use(
+  (config) => {
+    const auth = localStorage.getItem("temple_trust_auth");
+
+    if (auth) {
+      try {
+        const parsedAuth = JSON.parse(auth);
+
+        if (parsedAuth.token) {
+          config.headers.Authorization = `Bearer ${parsedAuth.token}`;
+        }
+      } catch (error) {
+        console.error("Invalid auth storage:", error);
+      }
+    }
+
+    return config;
+  },
+
+  (error) => Promise.reject(error),
     (config) => {
 
         const auth = localStorage.getItem("temple_trust_auth");
@@ -43,7 +62,6 @@ api.interceptors.request.use(
 
     (error) => Promise.reject(error)
 );
-
 
 api.interceptors.response.use(
 
@@ -122,6 +140,5 @@ export const getPujas = async () => {
 export const logoutUser = () => {
     return api.post("/logout");
 };
-
 
 export default api;

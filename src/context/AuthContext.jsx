@@ -24,7 +24,6 @@ function getStoredAuth() {
 }
 
 export function AuthProvider({ children }) {
-
   const storedAuth = getStoredAuth();
 
   const [user, setUser] = useState(storedAuth?.user || null);
@@ -33,51 +32,36 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-
   // ===========================
   // REGISTER
   // ===========================
 
   const register = useCallback(async (formData) => {
-
     setLoading(true);
     setError(null);
 
     try {
-
       const response = await registerUser(formData);
 
       return response.data;
-
     } catch (err) {
-
-      setError(
-        err.response?.data?.message ||
-        "Registration failed."
-      );
+      setError(err.response?.data?.message || "Registration failed.");
 
       throw err;
-
     } finally {
-
       setLoading(false);
-
     }
-
   }, []);
-
 
   // ===========================
   // LOGIN
   // ===========================
 
   const login = useCallback(async (credentials) => {
-
     setLoading(true);
     setError(null);
 
     try {
-
       const response = await loginUser(credentials);
 
       const { user, token } = response.data;
@@ -88,117 +72,85 @@ export function AuthProvider({ children }) {
         JSON.stringify({
           user,
           token,
-        })
+        }),
       );
 
       setUser(user);
       setToken(token);
 
       return response.data;
-
     } catch (err) {
-
-      setError(
-        err.response?.data?.message ||
-        "Login failed."
-      );
+      setError(err.response?.data?.message || "Login failed.");
 
       throw err;
-
     } finally {
-
       setLoading(false);
-
     }
-
   }, []);
-
 
   // ===========================
   // UPDATE PROFILE
   // ===========================
 
-  const updateProfile = useCallback(async (formData) => {
+  const updateProfile = useCallback(
+    async (formData) => {
+      setLoading(true);
+      setError(null);
 
-    setLoading(true);
-    setError(null);
+      try {
+        const response = await updateProfileApi(formData);
 
-    try {
+        console.log("PROFILE UPDATE RESPONSE:", response.data);
 
-      const response = await updateProfileApi(formData);
+        const updatedUser = response.data?.user || response.data;
 
-      console.log("PROFILE UPDATE RESPONSE:", response.data);
+        // Update React state
+        setUser(updatedUser);
 
-      const updatedUser =
-        response.data?.user ||
-        response.data;
+        // Get existing authentication
+        const stored = getStoredAuth();
 
-      // Update React state
-      setUser(updatedUser);
+        // Update localStorage
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            user: updatedUser,
+            token: stored?.token || token,
+          }),
+        );
 
-      // Get existing authentication
-      const stored = getStoredAuth();
+        return response.data;
+      } catch (err) {
+        console.error("Profile update error:", err.response?.data || err);
 
-      // Update localStorage
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          user: updatedUser,
-          token: stored?.token || token,
-        })
-      );
+        setError(err.response?.data?.message || "Profile update failed.");
 
-      return response.data;
-
-    } catch (err) {
-
-      console.error(
-        "Profile update error:",
-        err.response?.data || err
-      );
-
-      setError(
-        err.response?.data?.message ||
-        "Profile update failed."
-      );
-
-      throw err;
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  }, [token]);
-
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [token],
+  );
 
   // ===========================
   // LOGOUT
   // ===========================
 
   const logout = useCallback(async () => {
-
     try {
-
       if (token) {
         await logoutUser();
       }
-
     } catch (e) {
-
       console.log("Logout API error:", e);
-
     } finally {
-
       localStorage.removeItem(STORAGE_KEY);
 
       setUser(null);
       setToken(null);
     }
-
   }, [token]);
-
 
   return (
     <AuthContext.Provider
@@ -220,18 +172,13 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-
 }
 
-
 export function useAuth() {
-
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error(
-      "useAuth must be used inside AuthProvider"
-    );
+    throw new Error("useAuth must be used inside AuthProvider");
   }
 
   return context;

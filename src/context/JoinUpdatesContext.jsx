@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 
 const JoinUpdatesContext = createContext(null);
 
@@ -11,25 +17,19 @@ export function JoinUpdatesProvider({ children }) {
   const openPopup = useCallback(() => setIsOpen(true), []);
   const closePopup = useCallback(() => setIsOpen(false), []);
 
-  // Auto-open once per browser session, a few seconds after the visitor lands —
-  // gentle enough not to feel like a spam popup, but visible on every page since
-  // this provider + popup live inside MainLayout (wraps every route).
- useEffect(() => {
-  // console.log("JoinUpdatesProvider mounted");
+  useEffect(() => {
+    const alreadyShown = sessionStorage.getItem(SESSION_KEY);
 
-  const alreadyShown = sessionStorage.getItem(SESSION_KEY);
-  // console.log("alreadyShown:", alreadyShown);
+    if (alreadyShown) return;
 
-  if (alreadyShown) return;
+    const timer = setTimeout(() => {
+      console.log("Opening popup...");
+      setIsOpen(true);
+      sessionStorage.setItem(SESSION_KEY, "true");
+    }, AUTO_OPEN_DELAY_MS);
 
-  const timer = setTimeout(() => {
-    console.log("Opening popup...");
-    setIsOpen(true);
-    sessionStorage.setItem(SESSION_KEY, "true");
-  }, AUTO_OPEN_DELAY_MS);
-
-  return () => clearTimeout(timer);
-}, []);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <JoinUpdatesContext.Provider value={{ isOpen, openPopup, closePopup }}>
       {children}
@@ -39,6 +39,7 @@ export function JoinUpdatesProvider({ children }) {
 
 export function useJoinUpdates() {
   const ctx = useContext(JoinUpdatesContext);
-  if (!ctx) throw new Error("useJoinUpdates must be used within a JoinUpdatesProvider");
+  if (!ctx)
+    throw new Error("useJoinUpdates must be used within a JoinUpdatesProvider");
   return ctx;
 }

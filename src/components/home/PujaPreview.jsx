@@ -33,7 +33,7 @@ export default function PujaPreview() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
               <div className="puja-card-top">
-                <span className="puja-duration"><FiClock size={13} /> {puja.duration}</span>
+                <span className="puja-duration"><FiClock size={13} /> {puja.duration} Hours</span>
                 <span className="puja-price">₹{puja.price.toLocaleString("en-IN")}</span>
               </div>
               <h4>{puja.name}</h4>

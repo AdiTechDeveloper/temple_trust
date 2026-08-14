@@ -72,9 +72,6 @@ api.interceptors.response.use(
 export const getPujas = async () => {
   try {
     const response = await api.get("/admin/poojas");
-
-    console.log("Pooja API Response:", response.data);
-
     return response.data.poojas || [];
   } catch (error) {
     console.error("Error fetching pujas:", error);
@@ -103,6 +100,32 @@ export const getAvailableSlots = async (pujaId, bookingDate) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching available slots:", error);
+    throw error;
+  }
+};
+
+/**
+ * Create Razorpay Order
+ */
+export const createPujaOrder = async (bookingData) => {
+  try {
+    const response = await api.post("/puja/create-order", bookingData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating order:", error);
+    throw error;
+  }
+};
+
+/**
+ * Verify Razorpay Signature & Complete Booking
+ */
+export const verifyPujaPayment = async (paymentPayload) => {
+  try {
+    const response = await api.post("/puja/verify-payment", paymentPayload);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying payment:", error);
     throw error;
   }
 };

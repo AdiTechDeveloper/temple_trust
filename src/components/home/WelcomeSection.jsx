@@ -16,7 +16,11 @@ export default function WelcomeSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7 }}
         >
-          <img src={welcomeImage} alt="Sanctum of Shree Sidhh Rudreshwar Mahadev Temple" className="welcome-image" />
+          <img
+            src={welcomeImage}
+            alt="Sanctum of Shree Sidhh Rudreshwar Mahadev Temple"
+            className="welcome-image"
+          />
           <div className="welcome-badge">
             <strong>27+</strong>
             <span>Years of Uninterrupted Seva</span>
@@ -30,14 +34,25 @@ export default function WelcomeSection() {
           transition={{ duration: 0.7, delay: 0.1 }}
         >
           <span className="eyebrow">Welcome</span>
-          <h2 className="section-heading">Where Devotion Inspires Service,and Service Strengthens Society</h2>
+          <h2 className="section-heading">
+            Where Devotion Inspires Service,and Service Strengthens Society
+          </h2>
           <p style={{ marginBottom: 18 }}>
-            For years, Shree Sidhh Rudreshwar Mahadev Temple & Trust has been a center of faith, spirituality, and selfless service. Beyond daily worship and sacred rituals, the trust is dedicated to uplifting the community through meaningful charitable initiatives.
+            For years, Shree Sidhh Rudreshwar Mahadev Temple & Trust has been a
+            center of faith, spirituality, and selfless service. Beyond daily
+            worship and sacred rituals, the trust is dedicated to uplifting the
+            community through meaningful charitable initiatives.
           </p>
           <p style={{ marginBottom: 30 }}>
-            From Darshan, Puja Booking, and Live Darshan to Annadan (Bhojanalay), Gaushala Seva, Festival Celebrations, Donation Programs, and Community Welfare Activities, every effort is guided by the values of compassion, devotion, and humanity.
+            From Darshan, Puja Booking, and Live Darshan to Annadan
+            (Bhojanalay), Gaushala Seva, Festival Celebrations, Donation
+            Programs, and Community Welfare Activities, every effort is guided
+            by the values of compassion, devotion, and humanity.
           </p>
-          <Link to={ROUTE_PATHS.ABOUT_TRUST} className="btn-temple btn-navy-outline">
+          <Link
+            to={ROUTE_PATHS.ABOUT_TRUST}
+            className="btn-temple btn-navy-outline"
+          >
             Discover Our Journey <FiArrowUpRight />
           </Link>
         </motion.div>

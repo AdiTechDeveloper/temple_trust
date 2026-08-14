@@ -78,9 +78,7 @@ export const getPujas = async () => {
     return response.data.poojas || [];
   } catch (error) {
     console.error("Error fetching pujas:", error);
-
     console.error("Status:", error.response?.status);
-
     console.error("Response:", error.response?.data);
 
     throw error;

@@ -6,6 +6,8 @@ export const ROUTE_PATHS = {
   ONLINE_DARSHAN: "/online-darshan",
   PUJA_BOOKING: "/puja-booking",
   PUJA_DETAILS: "/puja-booking/:slug",
+  VIDEO: "/video",
+  VIDEO_DETAILS: "/video/:slug",
   DONATION: "/donation",
   GAUSHALA: "/gaushala",
   BHOJANSHALA: "/bhojanshala",
@@ -22,3 +24,5 @@ export const ROUTE_PATHS = {
 };
 
 export const pujaDetailsPath = (slug) => `/puja-booking/${slug}`;
+
+export const videoDetailsPath = (slug) => `/videos/${slug}`;

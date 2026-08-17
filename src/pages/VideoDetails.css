@@ -1,0 +1,390 @@
+/* =========================================
+   BREADCRUMB
+========================================= */
+
+.video-breadcrumb {
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background: var(--bg-light, #faf8f3);
+}
+
+.video-breadcrumb .container-xl {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.video-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.video-breadcrumb a:hover {
+    opacity: 0.65;
+}
+
+.video-breadcrumb span {
+    opacity: 0.6;
+}
+
+
+/* =========================================
+   MAIN VIDEO SECTION
+========================================= */
+
+.video-details-section {
+    padding-top: 55px;
+    padding-bottom: 80px;
+}
+
+.video-details-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 45px;
+    align-items: start;
+}
+
+
+/* =========================================
+   LEFT SIDE
+========================================= */
+
+.video-details-main {
+    min-width: 0;
+}
+
+
+/* =========================================
+   VIDEO PLAYER
+========================================= */
+
+.video-player-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+
+    background: #000;
+
+    border-radius: 14px;
+    overflow: hidden;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.video-player-wrapper iframe {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0;
+    display: block;
+}
+
+
+/* =========================================
+   VIDEO TITLE
+========================================= */
+
+.video-details-title {
+    margin: 25px 0 12px;
+
+    font-family: var(--font-display, inherit);
+    font-size: 32px;
+    font-weight: 600;
+
+    line-height: 1.3;
+
+    color: var(--text-color, #14213d);
+}
+
+
+/* =========================================
+   VIDEO META
+========================================= */
+
+.video-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    margin-bottom: 28px;
+
+    color: var(--text-muted, #777);
+    font-size: 13px;
+}
+
+.video-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.video-description {
+    padding-top: 25px;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.video-description h3 {
+    margin: 0 0 12px;
+
+    font-family: var(--font-display, inherit);
+    font-size: 20px;
+
+    color: var(--text-color, #14213d);
+}
+
+.video-description p {
+    margin: 0;
+
+    line-height: 1.8;
+
+    color: var(--text-muted, #555);
+}
+
+
+/* =========================================
+   RIGHT SIDE - RECOMMENDED
+========================================= */
+
+.recommended-videos {
+    position: sticky;
+    top: 100px;
+}
+
+.recommended-videos > h3 {
+    margin: 0 0 22px;
+
+    font-family: var(--font-display, inherit);
+    font-size: 19px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    color: var(--text-color, #14213d);
+}
+
+
+/* =========================================
+   RECOMMENDED VIDEO ITEM
+========================================= */
+
+.recommended-video {
+    display: grid;
+    grid-template-columns: 135px minmax(0, 1fr);
+
+    gap: 12px;
+
+    margin-bottom: 22px;
+
+    color: inherit;
+    text-decoration: none;
+
+    transition: transform 0.2s ease;
+}
+
+.recommended-video:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   RECOMMENDED THUMBNAIL
+========================================= */
+
+.recommended-thumbnail {
+    position: relative;
+
+    width: 100%;
+    height: 82px;
+
+    overflow: hidden;
+
+    border-radius: 8px;
+
+    background: #eee;
+}
+
+.recommended-thumbnail img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: transform 0.3s ease;
+}
+
+.recommended-video:hover .recommended-thumbnail img {
+    transform: scale(1.06);
+}
+
+
+/* =========================================
+   RECOMMENDED PLAY BUTTON
+========================================= */
+
+.recommended-play {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.12);
+
+    color: #fff;
+
+    font-size: 24px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.recommended-video:hover .recommended-play {
+    background: rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================
+   RECOMMENDED TEXT
+========================================= */
+
+.recommended-info {
+    min-width: 0;
+}
+
+.recommended-info h4 {
+    margin: 0 0 7px;
+
+    font-family: var(--font-display, inherit);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    line-height: 1.45;
+
+    color: var(--text-color, #14213d);
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.recommended-info span {
+    font-size: 12px;
+    color: var(--text-muted, #777);
+}
+
+
+/* =========================================
+   NO RECOMMENDED VIDEOS
+========================================= */
+
+.recommended-videos > .text-muted {
+    margin: 0;
+
+    padding: 15px;
+
+    border-radius: 8px;
+
+    background: rgba(0, 0, 0, 0.03);
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .video-details-layout {
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 30px;
+    }
+
+    .recommended-video {
+        grid-template-columns: 115px minmax(0, 1fr);
+    }
+
+    .recommended-thumbnail {
+        height: 72px;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 991px) {
+
+    .video-details-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .recommended-videos {
+        position: static;
+    }
+
+    .recommended-videos > h3 {
+        margin-top: 5px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .video-details-section {
+        padding-top: 30px;
+        padding-bottom: 55px;
+    }
+
+    .video-details-title {
+        font-size: 25px;
+    }
+
+    .video-meta {
+        gap: 10px 15px;
+    }
+
+    .recommended-video {
+        grid-template-columns: 120px minmax(0, 1fr);
+    }
+
+    .recommended-thumbnail {
+        height: 74px;
+    }
+
+    .video-breadcrumb {
+        padding: 14px 0;
+    }
+
+}

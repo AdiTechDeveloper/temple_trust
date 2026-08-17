@@ -73,13 +73,13 @@ export const getPujas = async () => {
   try {
     const response = await api.get("/admin/poojas");
 
-    console.log("Pooja API Response:", response.data);
+    // console.log("Pooja API Response:", response.data);
 
     return response.data.poojas || [];
   } catch (error) {
     console.error("Error fetching pujas:", error);
-    console.error("Status:", error.response?.status);
-    console.error("Response:", error.response?.data);
+    // console.error("Status:", error.response?.status);
+    // console.error("Response:", error.response?.data);
 
     throw error;
   }

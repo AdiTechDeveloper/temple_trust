@@ -31,7 +31,7 @@ export const getPujas = async () => {
 
         return response.data.poojas || [];
     } catch (error) {
-        console.error("Failed to fetch Poojas:", error);
+        // console.error("Failed to fetch Poojas:", error);
         throw error;
     }
 };
@@ -50,7 +50,7 @@ export const getPujaBySlug = async (slug) => {
 
         return puja || null;
     } catch (error) {
-        console.error("Failed to fetch Puja details:", error);
+        // console.error("Failed to fetch Puja details:", error);
         throw error;
     }
 };
@@ -92,21 +92,21 @@ export const getVideos = async () => {
     try {
         const response = await api.get("/videos");
 
-        console.log("VIDEO API RESPONSE:", response.data);
+        // console.log("VIDEO API RESPONSE:", response.data);
 
         const videos =
             response.data.videos ||
             response.data.video ||
             [];
 
-        console.log("VIDEOS SENT TO COMPONENT:", videos);
+        // console.log("VIDEOS SENT TO COMPONENT:", videos);
 
         return Array.isArray(videos) ? videos : [];
 
     } catch (error) {
-        console.error("Failed to fetch videos:", error);
-        console.error("Status:", error.response?.status);
-        console.error("Data:", error.response?.data);
+        // console.error("Failed to fetch videos:", error);
+        // console.error("Status:", error.response?.status);
+        // console.error("Data:", error.response?.data);
 
         throw error;
     }
@@ -119,7 +119,23 @@ export const getVideoBySlug = async (slug) => {
 
         return response.data.video || null;
     } catch (error) {
-        console.error("Failed to fetch video:", error);
+        // console.error("Failed to fetch video:", error);
+        throw error;
+    }
+};
+
+export const getGallery = async () => {
+    try {
+        const response = await api.get("/gallery");
+
+        // console.log("Gallery API Response:", response.data);
+
+        return response.data.gallery || [];
+    } catch (error) {
+        // console.error("Error fetching gallery:", error);
+        // console.error("Status:", error.response?.status);
+        // console.error("Response:", error.response?.data);
+
         throw error;
     }
 };

@@ -19,11 +19,11 @@ export default function HomeVideos() {
             try {
                 const data = await getVideos();
 
-                console.log("HOME VIDEOS DATA:", data);
+                // console.log("HOME VIDEOS DATA:", data);
 
                 setVideos(data.slice(0, 4));
             } catch (error) {
-                console.error("Home video error:", error);
+                // console.error("Home video error:", error);
                 setVideos([]);
             } finally {
                 setLoading(false);

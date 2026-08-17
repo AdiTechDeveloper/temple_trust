@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect, useCallback } from "react";
 import {
   FiUser,
   FiPhone,
@@ -7,10 +6,14 @@ import {
   FiClock,
   FiCheckCircle,
 } from "react-icons/fi";
-import { getAvailableSlots, bookPuja } from "../../services/api";
+import {
+  getAvailableSlots,
+  createPujaOrder,
+  verifyPujaPayment,
+} from "../../services/api"; // Ensure exports in api.js
+import { color } from "framer-motion";
 
 export default function PujaBookingForm({ puja }) {
-  // Calculate Minimum Selectable Date (Today + 5 Days)
   const getMinBookingDate = () => {
     const minDate = new Date();
     minDate.setDate(minDate.getDate() + 5);
@@ -19,7 +22,6 @@ export default function PujaBookingForm({ puja }) {
 
   const minDate = getMinBookingDate();
 
-  // State Management
   const [form, setForm] = useState({
     name: "",
     mobile: "",
@@ -34,38 +36,56 @@ export default function PujaBookingForm({ puja }) {
   const [errors, setErrors] = useState({});
   const [bookingSuccess, setBookingSuccess] = useState(null);
 
-  // Fetch Time Slots dynamically on date change
+  // 1. Dynamically Load Razorpay Checkout Script
   useEffect(() => {
-    if (puja?.id && form.bookingDate) {
-      fetchSlots(form.bookingDate);
-    }
-  }, [puja?.id, form.bookingDate]);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
 
-  const fetchSlots = async (selectedDate) => {
-    setLoadingSlots(true);
-    setForm((f) => ({ ...f, timeSlot: "" })); // Reset selected slot
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
-    try {
-      const data = await getAvailableSlots(puja.id, selectedDate);
-      if (data.status) {
-        setSlots(data.slots || []);
+  // Wrap fetchSlots in useCallback
+  const fetchSlots = useCallback(
+    async (selectedDate) => {
+      if (!puja?.id || !selectedDate) return;
+
+      setLoadingSlots(true);
+
+      try {
+        const data = await getAvailableSlots(puja.id, selectedDate);
+        if (data?.status) {
+          setSlots(data.slots || []);
+        }
+      } catch (err) {
+        console.error("Failed to load slots:", err);
+      } finally {
+        setLoadingSlots(false);
       }
-    } catch (err) {
-      console.error("Failed to load slots:", err);
-    } finally {
-      setLoadingSlots(false);
-    }
-  };
+    },
+    [puja?.id],
+  );
+
+  // Fetch Time Slots on component load and whenever date or puja ID changes
+  useEffect(() => {
+    fetchSlots(form.bookingDate);
+  }, [form.bookingDate, fetchSlots]);
 
   const handleChange = (e) => {
     let { name, value } = e.target;
 
-    // Sanitize mobile number (10 digits standard)
     if (name === "mobile") {
       value = value.replace(/\D/g, "").slice(0, 10);
     }
 
-    setForm((f) => ({ ...f, [name]: value }));
+    if (name === "bookingDate") {
+      setForm((f) => ({ ...f, bookingDate: value, timeSlot: "" }));
+    } else {
+      setForm((f) => ({ ...f, [name]: value }));
+    }
 
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
@@ -77,40 +97,131 @@ export default function PujaBookingForm({ puja }) {
     setSubmitting(true);
     setErrors({});
 
-    const payload = {
+    const bookingPayload = {
       puja_id: puja.id,
       name: form.name,
       mobile: form.mobile,
-      dob: form.dob, // Compulsory
+      dob: form.dob,
       booking_date: form.bookingDate,
       time_slot: form.timeSlot,
     };
 
     try {
-      const data = await bookPuja(payload);
+      // Create Razorpay Order
+      const orderRes = await createPujaOrder(bookingPayload);
 
-      if (data.status) {
-        setBookingSuccess(data.data);
+      if (!orderRes.status) {
+        throw new Error(orderRes.message || "Failed to initialize payment.");
       }
+
+      // Configure & Open Razorpay Modal
+      const options = {
+        key: orderRes.key,
+        amount: orderRes.amount,
+        currency: orderRes.currency,
+        name: "Shree Sidhh Rudreshwar Seva Sanstha & Charitable Trust",
+        description: `Booking for ${puja.name || puja.title}`,
+        order_id: orderRes.razorpay_order_id,
+        prefill: {
+          name: form.name,
+          contact: form.mobile,
+        },
+        theme: {
+          color: "#d97706",
+        },
+        handler: async function (response) {
+          try {
+            const verifyPayload = {
+              ...bookingPayload,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+            };
+
+            const verifyRes = await verifyPujaPayment(verifyPayload);
+
+            if (verifyRes?.status) {
+              // Optimistically mark slot as booked
+              setSlots((prevSlots) =>
+                prevSlots.map((s) =>
+                  s.time === form.timeSlot ? { ...s, available: false } : s,
+                ),
+              );
+
+              // Refetch slots to guarantee synced state
+              await fetchSlots(form.bookingDate);
+
+              // Show success screen
+              setBookingSuccess(verifyRes.data);
+            } else {
+              // Handle API returning status: false
+              setErrors({
+                submit:
+                  verifyRes?.message ||
+                  "Payment verification failed. Please contact support.",
+              });
+            }
+          } catch (err) {
+            setErrors({
+              submit:
+                err.response?.data?.message ||
+                "Payment verification failed. Please contact support.",
+            });
+          } finally {
+            // Unlocks submit button whether verification succeeds or fails
+            setSubmitting(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            // Unsets submitting state if user closes Razorpay popup
+            setSubmitting(false);
+          },
+        },
+      };
+
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.on("payment.failed", function (response) {
+        setSubmitting(false);
+        setErrors({
+          submit:
+            response.error.description || "Payment failed. Please try again.",
+        });
+      });
+
+      razorpayInstance.open();
     } catch (err) {
+      setSubmitting(false);
       if (err.response?.status === 422) {
         setErrors(err.response.data.errors || {});
       } else {
         setErrors({
           submit:
             err.response?.data?.message ||
-            "Failed to process booking. Please try again.",
+            err.message ||
+            "Failed to initiate payment. Please try again.",
         });
       }
-    } finally {
-      setSubmitting(false);
     }
   };
 
-  // Get active price (offers price or original price)
+  const handleBookAnother = async () => {
+    // Reset inputs
+    setForm({
+      name: "",
+      mobile: "",
+      dob: "",
+      bookingDate: minDate,
+      timeSlot: "",
+    });
+    setBookingSuccess(null);
+
+    // Re-fetch slots for minDate
+    await fetchSlots(minDate);
+  };
+
   const activePrice = Number(puja?.offer_price || puja?.price || 0);
 
-  // 3. Render Confirmation View on Success
   if (bookingSuccess) {
     return (
       <div
@@ -119,13 +230,13 @@ export default function PujaBookingForm({ puja }) {
       >
         <FiCheckCircle size={50} color="var(--gold, #d97706)" />
         <h3 style={{ marginTop: "0.75rem", fontSize: "1.3rem" }}>
-          Booking Request Received
+          Puja Booking Confirmed!
         </h3>
         <p
           style={{ fontSize: "0.9rem", color: "#4b5563", margin: "0.75rem 0" }}
         >
-          Thank you, <strong>{form.name}</strong>. Your request for{" "}
-          <strong>{puja.name || puja.title}</strong> has been booked for{" "}
+          Thank you, <strong>{form.name}</strong>. Your payment was successful
+          and <strong>{puja.name || puja.title}</strong> has been confirmed for{" "}
           <strong>
             {new Date(form.bookingDate).toLocaleDateString("en-IN", {
               day: "numeric",
@@ -156,16 +267,7 @@ export default function PujaBookingForm({ puja }) {
         <button
           type="button"
           className="btn-temple btn-primary-gold"
-          onClick={() => {
-            setBookingSuccess(null);
-            setForm({
-              name: "",
-              mobile: "",
-              dob: "",
-              bookingDate: minDate,
-              timeSlot: "",
-            });
-          }}
+          onClick={handleBookAnother}
         >
           Book Another Puja
         </button>
@@ -173,13 +275,11 @@ export default function PujaBookingForm({ puja }) {
     );
   }
 
-  // 4. Render Booking Form
   return (
     <form onSubmit={handleSubmit} noValidate className="puja-booking-form">
-      {/* Full Name */}
       <div className="form-field">
         <label htmlFor="name">
-          <FiUser size={14} /> Full Name*
+          <FiUser size={14} /> Full Name<span className="field-error">*</span>
         </label>
         <input
           id="name"
@@ -196,7 +296,8 @@ export default function PujaBookingForm({ puja }) {
       <div className="form-row">
         <div className="form-field">
           <label htmlFor="mobile">
-            <FiPhone size={14} /> Mobile Number*
+            <FiPhone size={14} /> Mobile Number
+            <span className="field-error">*</span>
           </label>
           <input
             id="mobile"
@@ -217,7 +318,8 @@ export default function PujaBookingForm({ puja }) {
 
         <div className="form-field">
           <label htmlFor="dob">
-            <FiCalendar size={14} /> Date of Birth*
+            <FiCalendar size={14} /> Date of Birth
+            <span className="field-error">*</span>
           </label>
           <input
             id="dob"
@@ -232,10 +334,10 @@ export default function PujaBookingForm({ puja }) {
         </div>
       </div>
 
-      {/* Booking Date (5-day Advance Rule) */}
       <div className="form-field">
         <label htmlFor="bookingDate">
-          <FiCalendar size={14} /> Preferred Puja Date*
+          <FiCalendar size={14} /> Preferred Puja Date
+          <span className="field-error">*</span>
         </label>
         <input
           id="bookingDate"
@@ -248,7 +350,7 @@ export default function PujaBookingForm({ puja }) {
           required
         />
         <small
-          style={{ fontSize: "1rem", color: "#d97706", marginTop: "0.2rem" }}
+          style={{ fontSize: "0.85rem", color: "#d97706", marginTop: "0.2rem" }}
         >
           Min. 5 days advance booking required
         </small>
@@ -257,10 +359,10 @@ export default function PujaBookingForm({ puja }) {
         )}
       </div>
 
-      {/* Time Slot Picker */}
       <div className="form-field">
         <label>
-          <FiClock size={14} /> Select Time Slot*
+          <FiClock size={14} /> Select Time Slot
+          <span className="field-error">*</span>
         </label>
 
         {loadingSlots ? (
@@ -315,7 +417,7 @@ export default function PujaBookingForm({ puja }) {
                     cursor: isBooked ? "not-allowed" : "pointer",
                     display: "flex",
                     flexDirection: "column",
-                    alignitems: "center",
+                    alignItems: "center",
                   }}
                 >
                   <span>{slot.time}</span>
@@ -347,21 +449,21 @@ export default function PujaBookingForm({ puja }) {
             padding: "0.5rem 0.75rem",
             borderRadius: "6px",
             fontSize: "0.85rem",
+            marginBottom: "0.5rem",
           }}
         >
           {errors.submit}
         </div>
       )}
 
-      {/* Submit CTA */}
       <button
         type="submit"
         className="btn-temple btn-primary-gold form-submit-btn"
         disabled={submitting || !form.timeSlot}
       >
         {submitting
-          ? "Submitting..."
-          : `Book Now — ₹${activePrice.toLocaleString("en-IN")}`}
+          ? "Processing Payment..."
+          : `Pay & Book — ₹${activePrice.toLocaleString("en-IN")}`}
       </button>
     </form>
   );

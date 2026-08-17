@@ -23,7 +23,6 @@ export function JoinUpdatesProvider({ children }) {
     if (alreadyShown) return;
 
     const timer = setTimeout(() => {
-      console.log("Opening popup...");
       setIsOpen(true);
       sessionStorage.setItem(SESSION_KEY, "true");
     }, AUTO_OPEN_DELAY_MS);

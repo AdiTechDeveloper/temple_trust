@@ -146,7 +146,7 @@ export default function Donation() {
               <strong>{wants80G ? "80G Tax Receipt" : "Standard Receipt"}</strong>
             </div>
 
-            <button type="submit" className="btn-temple btn-primary-gold form-submit-btn" disabled={submitting || !finalAmount}>
+            <button type="submit" className="btn-temple btn-primary-gold form-submit-btn mt-2" disabled={submitting || !finalAmount}>
               <FiHeart /> {submitting ? "Processing..." : `Donate ₹${finalAmount ? finalAmount.toLocaleString("en-IN") : "0"}`}
             </button>
 

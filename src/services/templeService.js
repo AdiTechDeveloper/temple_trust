@@ -26,36 +26,35 @@ export const getSuggestedAmounts = () => resolve(suggestedAmounts);
 // export const getPujaBySlug = (slug) => resolve(pujaData.find((p) => p.id === slug) || null);
 
 export const getPujas = async () => {
-    try {
-        const response = await api.get("/poojas");
+  try {
+    const response = await api.get("/poojas");
 
-        return response.data.poojas || [];
-    } catch (error) {
-        // console.error("Failed to fetch Poojas:", error);
-        throw error;
-    }
+    return response.data.poojas || [];
+  } catch (error) {
+    console.error("Failed to fetch Poojas:", error);
+    throw error;
+  }
 };
 
 export const getPujaBySlug = async (slug) => {
-    try {
-        const response = await api.get("/poojas");
+  try {
+    const response = await api.get("/poojas");
 
-        const pujas = response.data.poojas || [];
+    const pujas = response.data.poojas || [];
 
-        const puja = pujas.find(
-            (item) =>
-                String(item.id) === String(slug) ||
-                String(item.slug) === String(slug)
-        );
-
-        return puja || null;
-    } catch (error) {
-        // console.error("Failed to fetch Puja details:", error);
-        throw error;
-    }
+    const puja = pujas.find(
+      (item) =>
+        String(item.id) === String(slug) || String(item.slug) === String(slug),
+    );
+    return puja || null;
+  } catch (error) {
+    console.error("Failed to fetch Puja details:", error);
+    throw error;
+  }
 };
 
-export const getUpcomingEvents = () => resolve(eventsData.filter((e) => !e.isPast));
+export const getUpcomingEvents = () =>
+  resolve(eventsData.filter((e) => !e.isPast));
 export const getAllEvents = () => resolve(eventsData);
 export const getTestimonials = () => resolve(testimonialData);
 export const getHomeGalleryPreview = () => resolve(homeGalleryPreview);
@@ -89,40 +88,37 @@ export const submitMemberUpdate = (payload) => {
 // VIDEOS
 // ===============================
 export const getVideos = async () => {
-    try {
-        const response = await api.get("/videos");
+  try {
+    const response = await api.get("/videos");
 
         // console.log("VIDEO API RESPONSE:", response.data);
+    const videos = response.data.videos || response.data.video || [];
 
-        const videos =
-            response.data.videos ||
-            response.data.video ||
-            [];
+    return Array.isArray(videos) ? videos : [];
+  } catch (error) {
+    console.error("Failed to fetch videos:", error);
+    console.error("Status:", error.response?.status);
+    console.error("Data:", error.response?.data);
 
         // console.log("VIDEOS SENT TO COMPONENT:", videos);
 
         return Array.isArray(videos) ? videos : [];
 
-    } catch (error) {
-        // console.error("Failed to fetch videos:", error);
-        // console.error("Status:", error.response?.status);
-        // console.error("Data:", error.response?.data);
-
-        throw error;
-    }
-};
-
+    } 
+   
+  }
 
 export const getVideoBySlug = async (slug) => {
-    try {
-        const response = await api.get(`/videos/${slug}`);
+  try {
+    const response = await api.get(`/videos/${slug}`);
 
         return response.data.video || null;
     } catch (error) {
         // console.error("Failed to fetch video:", error);
         throw error;
     }
-};
+    return response.data.video || null;
+  }
 
 export const getGallery = async () => {
     try {

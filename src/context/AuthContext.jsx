@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 
 import {
   loginUser,
@@ -14,9 +20,7 @@ const STORAGE_KEY = "temple_trust_auth";
 function getStoredAuth() {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
-
     if (!data) return null;
-
     return JSON.parse(data);
   } catch {
     return null;
@@ -35,18 +39,15 @@ export function AuthProvider({ children }) {
   // ===========================
   // REGISTER
   // ===========================
-
   const register = useCallback(async (formData) => {
     setLoading(true);
     setError(null);
 
     try {
       const response = await registerUser(formData);
-
       return response.data;
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed.");
-
       throw err;
     } finally {
       setLoading(false);
@@ -56,7 +57,6 @@ export function AuthProvider({ children }) {
   // ===========================
   // LOGIN
   // ===========================
-
   const login = useCallback(async (credentials) => {
     setLoading(true);
     setError(null);
@@ -66,14 +66,7 @@ export function AuthProvider({ children }) {
 
       const { user, token } = response.data;
 
-      // IMPORTANT
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          user,
-          token,
-        }),
-      );
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token }));
 
       setUser(user);
       setToken(token);
@@ -81,7 +74,6 @@ export function AuthProvider({ children }) {
       return response.data;
     } catch (err) {
       setError(err.response?.data?.message || "Login failed.");
-
       throw err;
     } finally {
       setLoading(false);
@@ -91,7 +83,6 @@ export function AuthProvider({ children }) {
   // ===========================
   // UPDATE PROFILE
   // ===========================
-
   const updateProfile = useCallback(
     async (formData) => {
       setLoading(true);
@@ -100,17 +91,12 @@ export function AuthProvider({ children }) {
       try {
         const response = await updateProfileApi(formData);
 
-        console.log("PROFILE UPDATE RESPONSE:", response.data);
-
         const updatedUser = response.data?.user || response.data;
 
-        // Update React state
         setUser(updatedUser);
 
-        // Get existing authentication
         const stored = getStoredAuth();
 
-        // Update localStorage
         localStorage.setItem(
           STORAGE_KEY,
           JSON.stringify({
@@ -121,10 +107,7 @@ export function AuthProvider({ children }) {
 
         return response.data;
       } catch (err) {
-        console.error("Profile update error:", err.response?.data || err);
-
         setError(err.response?.data?.message || "Profile update failed.");
-
         throw err;
       } finally {
         setLoading(false);
@@ -136,7 +119,6 @@ export function AuthProvider({ children }) {
   // ===========================
   // LOGOUT
   // ===========================
-
   const logout = useCallback(async () => {
     try {
       if (token) {
@@ -146,35 +128,30 @@ export function AuthProvider({ children }) {
       console.log("Logout API error:", e);
     } finally {
       localStorage.removeItem(STORAGE_KEY);
-
       setUser(null);
       setToken(null);
     }
   }, [token]);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-
-        loading,
-        error,
-
-        register,
-        login,
-        updateProfile,
-        logout,
-
-        isAuthenticated: !!token,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      token,
+      loading,
+      error,
+      register,
+      login,
+      updateProfile,
+      logout,
+      isAuthenticated: !!token,
+    }),
+    [user, token, loading, error, register, login, updateProfile, logout],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
@@ -182,4 +159,4 @@ export function useAuth() {
   }
 
   return context;
-}
+};

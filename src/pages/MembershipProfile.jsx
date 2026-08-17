@@ -187,11 +187,7 @@ export default function MembershipProfile() {
         formData.append("profile_photo", profilePhoto);
       }
 
-      console.log("Sending profile update...");
-
       const response = await updateProfile(formData);
-
-      console.log("Profile update response:", response);
 
       setIsEditing(false);
 

@@ -108,6 +108,32 @@ export const getAvailableSlots = async (pujaId, bookingDate) => {
 };
 
 /**
+ * Create Razorpay Order
+ */
+export const createPujaOrder = async (bookingData) => {
+  try {
+    const response = await api.post("/puja/create-order", bookingData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating order:", error);
+    throw error;
+  }
+};
+
+/**
+ * Verify Razorpay Signature & Complete Booking
+ */
+export const verifyPujaPayment = async (paymentPayload) => {
+  try {
+    const response = await api.post("/puja/verify-payment", paymentPayload);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    throw error;
+  }
+};
+
+/**
  * Book a puja (Auto-registers user if mobile doesn't exist)
  */
 export const bookPuja = async (bookingData) => {

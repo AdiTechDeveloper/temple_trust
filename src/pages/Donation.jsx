@@ -50,52 +50,21 @@ export default function Donation() {
   const finalAmount = customAmount ? Number(customAmount) : selectedAmount;
   const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
 
-  const isformValid = 
+  const isformValid =
     form.name.trim() !== "" &&
     form.dob.trim() !== "" &&
     form.phone.trim() !== "";
-
-  // const handleFormChange = (e) => {
-  //     let { name, value } = e.target;
-
-  // // If the field being changed is 'dob', apply the DD-MM-YYYY formatting mask
-  // if (name === "dob") {
-  //   // Remove all non-digit characters
-  //   const digits = value.replace(/\D/g, "");
-    
-  //   // Limit to 8 digits total (2 for day, 2 for month, 4 for year)
-  //   const limitedDigits = digits.slice(0, 8);
-
-  //   // Format with hyphens automatically
-  //   if (limitedDigits.length > 4) {
-  //     value = `${limitedDigits.slice(0, 2)}-${limitedDigits.slice(2, 4)}-${limitedDigits.slice(4)}`;
-  //   } else if (limitedDigits.length > 2) {
-  //     value = `${limitedDigits.slice(0, 2)}-${limitedDigits.slice(2)}`;
-  //   } else {
-  //     value = limitedDigits;
-  //   }
-  // }
-
-  //   setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-  //   if (errors[e.target.name]) {
-  //     setErrors((prev) => ({ ...prev, [e.target.name]: null }));
-  //   }
-  // };
-
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "dob") {
-      // 1. Remove everything except numbers
       let cleaned = value.replace(/\D/g, "");
 
-      // 2. Limit to max 8 digits (DDMMYYYY)
       if (cleaned.length > 8) {
         cleaned = cleaned.slice(0, 8);
       }
 
-      // 3. Build the DD-MM-YYYY format dynamically
       let formatted = cleaned;
       if (cleaned.length > 4) {
         formatted = `${cleaned.slice(0, 2)}-${cleaned.slice(2, 4)}-${cleaned.slice(4, 8)}`;
@@ -103,20 +72,16 @@ export default function Donation() {
         formatted = `${cleaned.slice(0, 2)}-${cleaned.slice(2)}`;
       }
 
-      // Update state with the masked value
       setForm((f) => ({ ...f, dob: formatted }));
     } else {
-      // Normal handling for other inputs (name, phone, pan)
       setForm((f) => ({ ...f, [name]: value }));
     }
 
-    // Clear error for the field if it exists
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
-  
   const handleSelectAmount = (amt) => {
     setSelectedAmount(amt);
     setCustomAmount("");
@@ -126,13 +91,13 @@ export default function Donation() {
     e.preventDefault();
     if (!finalAmount || finalAmount <= 0) return;
 
-    //validation fileds 
+    //validation fileds
     const newErrors = {};
-    if(!form.name.trim()) newErrors.name = "Name is required."
-    if(!form.dob.trim()) newErrors.dob = "DOB is required."
-    if(!form.phone.trim()) newErrors.phone = "Phone is required."
+    if (!form.name.trim()) newErrors.name = "Name is required.";
+    if (!form.dob.trim()) newErrors.dob = "DOB is required.";
+    if (!form.phone.trim()) newErrors.phone = "Phone is required.";
 
-    if(Object.keys(newErrors).length > 0){
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
@@ -237,6 +202,18 @@ export default function Donation() {
     }
   };
 
+  const handleReset = () => {
+    setForm(initialForm);
+    setSelectedCategoryId("general-donation");
+    setSelectedAmount(1101);
+    setCustomAmount("");
+    setAnonymous(false);
+    setRecurring(false);
+    setWants80G(true);
+    setErrors({});
+    setSubmitted(false);
+  };
+
   if (submitted) {
     return (
       <section className="section donation-success-section">
@@ -257,7 +234,7 @@ export default function Donation() {
               <strong>{selectedCategory?.title || "General Donation"}</strong>{" "}
               has been recorded.
               {wants80G &&
-                " An 80G tax receipt will be emailed to you shortly."}
+                " An 80G tax receipt will be send to your WhatsApp shortly."}
               {recurring && " Your monthly recurring donation has been set up."}
             </p>
             <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
@@ -266,7 +243,7 @@ export default function Donation() {
             <button
               className="btn-temple btn-navy-outline"
               style={{ marginTop: 20 }}
-              onClick={() => setSubmitted(false)}
+              onClick={handleReset}
             >
               Make Another Donation
             </button>
@@ -415,9 +392,16 @@ export default function Donation() {
             </button>
 
             {!isformValid && (
-                <p style={{ fontSize: "0.75rem", color:"#b91c1c", marginTop:"6px" , textAlign:"center"}}> 
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#b91c1c",
+                  marginTop: "6px",
+                  textAlign: "center",
+                }}
+              >
                 Please fill in Name, Date of birth and Email to enable donation.
-                </p>
+              </p>
             )}
 
             <p className="donation-secure-note">

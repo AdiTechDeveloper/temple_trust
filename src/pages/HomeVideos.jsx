@@ -10,6 +10,9 @@ import "./HomeVideos.css";
 
 const STORAGE_URL = "http://127.0.0.1:8000/storage";
 
+// const STORAGE_URL = "https://shreerudreshwar-backend.theaditech.com/storage";
+
+
 export default function HomeVideos() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,8 +30,23 @@ export default function HomeVideos() {
       }
     };
 
-    fetchVideos();
-  }, []);
+        fetchVideos();
+    }, []);
+
+    if (loading) {
+        return null;
+    }
+
+    if (!videos.length) {
+        return (
+            <section className="home-videos-section section">
+                <div className="container-xl">
+                    <p>No videos available.</p>
+                </div>
+            </section>
+        );
+    }
+    
 
   if (loading) {
     return null;

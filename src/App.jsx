@@ -10,6 +10,8 @@ import { ROUTE_PATHS } from "./routes/routePaths";
 const Home = lazy(() => import("./pages/Home"));
 const PujaBooking = lazy(() => import("./pages/PujaBooking"));
 const PujaDetails = lazy(() => import("./pages/PujaDetails"));
+const HomeVideos = lazy(() => import("./pages/HomeVideos"));
+const VideoDetails = lazy(() => import("./pages/VideoDetails"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const MembershipDashboard = lazy(() => import("./pages/MembershipDashboard"));
@@ -45,6 +47,9 @@ function App() {
               path={ROUTE_PATHS.DONATION}
               element={<Donation />}
             />
+
+            <Route path={ROUTE_PATHS.VIDEO} element={<HomeVideos />} />
+            <Route path={ROUTE_PATHS.VIDEO_DETAILS} element={<VideoDetails />} />
             <Route path={ROUTE_PATHS.GAUSHALA} element={<Gaushala />} />
             <Route
               path={ROUTE_PATHS.BHOJANSHALA}

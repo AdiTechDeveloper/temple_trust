@@ -21,7 +21,7 @@ export const navData = [
       // { label: "Volunteer", path: ROUTE_PATHS.VOLUNTEER },
     ],
   },
-  { label: "Events", path: ROUTE_PATHS.EVENTS },
+  // { label: "Events", path: ROUTE_PATHS.EVENTS },
   { label: "Gallery", path: ROUTE_PATHS.GALLERY },
   // { label: "News", path: ROUTE_PATHS.NEWS },
   { label: "Contact", path: ROUTE_PATHS.CONTACT },

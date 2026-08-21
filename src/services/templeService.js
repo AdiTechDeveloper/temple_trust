@@ -46,7 +46,6 @@ export const getPujaBySlug = async (slug) => {
       (item) =>
         String(item.id) === String(slug) || String(item.slug) === String(slug),
     );
-
     return puja || null;
   } catch (error) {
     console.error("Failed to fetch Puja details:", error);
@@ -91,26 +90,39 @@ export const submitMemberUpdate = (payload) => {
 export const getVideos = async () => {
   try {
     const response = await api.get("/videos");
-
     const videos = response.data.videos || response.data.video || [];
-
     return Array.isArray(videos) ? videos : [];
   } catch (error) {
     console.error("Failed to fetch videos:", error);
     console.error("Status:", error.response?.status);
     console.error("Data:", error.response?.data);
-
-    throw error;
+    return [];
   }
 };
 
 export const getVideoBySlug = async (slug) => {
   try {
     const response = await api.get(`/videos/${slug}`);
-
-    return response.data.video || null;
+    return response.data.videos || null;   // 👈 fixed: "videos" matches backend key
   } catch (error) {
     console.error("Failed to fetch video:", error);
     throw error;
   }
+};
+
+
+export const getGallery = async () => {
+    try {
+        const response = await api.get("/gallery");
+
+        // console.log("Gallery API Response:", response.data);
+
+        return response.data.gallery || [];
+    } catch (error) {
+        // console.error("Error fetching gallery:", error);
+        // console.error("Status:", error.response?.status);
+        // console.error("Response:", error.response?.data);
+
+        throw error;
+    }
 };

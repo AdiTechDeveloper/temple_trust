@@ -12,6 +12,8 @@ import {
 import { templeInfo } from "../data/templeInfo";
 import SectionHeading from "../components/common/SectionHeading";
 import FaqAccordion from "../components/temple/FaqAccordion";
+import udaasinImg from "../assets/images/about/udaasin-aashram.jpg";
+
 import "./AboutTemple.css";
 
 export default function AboutTemple() {
@@ -46,7 +48,7 @@ export default function AboutTemple() {
       </section>
 
       {/* History & Significance */}
-      <section className="section">
+      {/* <section className="section">
         <div className="container-xl about-grid">
           <motion.img
             src={historyImg}
@@ -79,6 +81,112 @@ export default function AboutTemple() {
             </p>
           </motion.div>
         </div>
+      </section> */}
+
+      {/* Udaasin Aashram */}
+      <section className="section udaasin-section">
+        <div className="container-xl about-grid">
+           <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+          >
+            <img
+              src={udaasinImg}
+              alt="Udaasin Aashram"
+              className="about-portrait-alt udaasin-image"
+            />
+          </motion.div>
+
+
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="eyebrow">Udaasin Aashram</span>
+
+            <h2 className="section-heading">
+              A Space for Spirituality, Seva & Sadhana
+            </h2>
+
+            <p style={{ marginBottom: 16 }}>
+              Developed by Shree Rudreshwar Seva Sanstha & Charitable Trust,
+              the Udaasin Aashram is an important spiritual initiative of the
+              Trust, created as a peaceful space for spiritual practice,
+              reflection and seva.
+            </p>
+
+            <p style={{ marginBottom: 16 }}>
+              The Aashram represents the Trust's commitment to preserving
+              spiritual and cultural values while creating an environment where
+              devotees and seekers can connect with their inner self and the
+              timeless traditions of Sanatan Dharma.
+            </p>
+
+            <p style={{ marginBottom: 24 }}>
+              Through the Udaasin Aashram, the Trust seeks to bring together
+              spirituality, discipline, knowledge and selfless service, while
+              nurturing a peaceful environment for present and future
+              generations.
+            </p>
+
+            {/* <div className="udassin-highlights">
+              <div className="udassin-highlight">
+                <span>01</span>
+                <strong>Spirituality</strong>
+                <p>A peaceful environment for spiritual growth and reflection.</p>
+              </div>
+
+              <div className="udassin-highlight">
+                <span>02</span>
+                <strong>Seva</strong>
+                <p>Encouraging the spirit of selfless service and compassion.</p>
+              </div>
+
+              <div className="udassin-highlight">
+                <span>03</span>
+                <strong>Tradition</strong>
+                <p>Preserving spiritual and cultural values for future generations.</p>
+              </div>
+
+              <div className="udassin-highlight">
+                <span>04</span>
+                <strong>Sadhana</strong>
+                <p>Supporting an atmosphere of discipline, devotion and contemplation.</p>
+              </div>
+            </div> */}
+          </motion.div>
+              
+         
+        </div>
+          <div className="udassin-highlights">
+              <div className="udassin-highlight">
+                <span>01</span>
+                <strong>Spirituality</strong>
+                <p>A peaceful environment for spiritual growth and reflection.</p>
+              </div>
+
+              <div className="udassin-highlight">
+                <span>02</span>
+                <strong>Seva</strong>
+                <p>Encouraging the spirit of selfless service and compassion.</p>
+              </div>
+
+              <div className="udassin-highlight">
+                <span>03</span>
+                <strong>Tradition</strong>
+                <p>Preserving spiritual and cultural values for future generations.</p>
+              </div>
+
+              <div className="udassin-highlight">
+                <span>04</span>
+                <strong>Sadhana</strong>
+                <p>Supporting an atmosphere of discipline, devotion and contemplation.</p>
+              </div>
+            </div>
       </section>
 
       {/* Architecture */}

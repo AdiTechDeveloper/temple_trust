@@ -56,25 +56,45 @@ export default function JoinUpdatesPopup() {
     }, 300);
   };
 
-  const handleChange = (e) => {
-    let { name, value } = e.target;
+ const handleChange = (e) => {
+  let { name, value } = e.target;
 
-    if (name === "mobile") {
-      value = value.replace(/\D/g, "").slice(0, 10);
+  if (name === "dob") {
+    // 1. Remove everything except numbers
+    let cleaned = value.replace(/\D/g, "");
+
+    // 2. Limit to max 8 digits (DDMMYYYY)
+    if (cleaned.length > 8) {
+      cleaned = cleaned.slice(0, 8);
     }
 
-    setForm((prev) => ({
+    // 3. Build the DD-MM-YYYY format dynamically
+    let formatted = cleaned;
+    if (cleaned.length > 4) {
+      formatted = `${cleaned.slice(0, 2)}-${cleaned.slice(2, 4)}-${cleaned.slice(4, 8)}`;
+    } else if (cleaned.length > 2) {
+      formatted = `${cleaned.slice(0, 2)}-${cleaned.slice(2)}`;
+    }
+
+    // Update state for dob and exit the handler
+    setForm((f) => ({ ...f, dob: formatted }));
+  } else if (name === "phone") {
+    // Handle phone number validation (digits only, max 10)
+    let cleanedPhone = value.replace(/\D/g, "").slice(0, 10);
+    setForm((f) => ({ ...f, phone: cleanedPhone }));
+  } else {
+    // For other inputs (name, pan, etc.)
+    setForm((f) => ({ ...f, [name]: value }));
+  }
+
+  // Clear error for the field if it exists
+  if (errors[name]) {
+    setErrors((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: null,
     }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: null,
-      }));
-    }
-  };
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,6 +104,10 @@ export default function JoinUpdatesPopup() {
 
     if (!form.name.trim()) {
       newErrors.name = ["Please enter your name."];
+    }
+
+    if(!form.dob.trim()){
+      newErrors.dob=["Please enter Date of Birth"]
     }
 
     if (!form.mobile.trim()) {
@@ -185,9 +209,8 @@ export default function JoinUpdatesPopup() {
           onClick={resetAndClose}
         >
           <motion.div
-            className={`join-popup-panel ${
-              step === "form" ? "is-form-step" : ""
-            }`}
+            className={`join-popup-panel ${step === "form" ? "is-form-step" : ""
+              }`}
             initial={{ opacity: 0, y: 30, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.96 }}
@@ -394,12 +417,20 @@ export default function JoinUpdatesPopup() {
                       <input
                         id="jp-dob"
                         name="dob"
-                        type="date"
+                        type="text"
+                        placeholder="DD-MM-YYYY"
                         value={form.dob}
+                        maxLength={10} 
+                        required
+                        className={errors.dob ? "input-invalid" : ""}
                         onChange={handleChange}
                       />
+                       {errors.dob && (
+                        <span className="field-error">{errors.dob[0]}</span>
+                      )}
                     </div>
                   </div>
+
 
                   <div className="join-popup-family-section">
                     <label className="join-popup-family-label">
@@ -608,4 +639,7 @@ export default function JoinUpdatesPopup() {
       )}
     </AnimatePresence>
   );
+
 }
+
+

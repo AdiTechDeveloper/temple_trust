@@ -143,6 +143,29 @@ export const bookPuja = async (bookingData) => {
   }
 };
 
+/**
+ * Donation
+ */
+export const createDonationOrder = async (payload) => {
+  try {
+    const { data } = await api.post("/donations/create-order", payload);
+    return data;
+  } catch (error) {
+    console.error("Error creating donation:", error);
+    throw error;
+  }
+};
+
+export const verifyDonationPayment = async (payload) => {
+  try {
+    const { data } = await api.post("/donations/verify", payload);
+    return data;
+  } catch (error) {
+    console.error("Error creating donation:", error);
+    throw error;
+  }
+};
+
 // ===============================
 // LOGOUT
 // ===============================

@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FiHeart, FiCheckCircle, FiShield } from "react-icons/fi";
 import donationBanner from "../assets/images/donations/donation-banner.jpg";
-import { getDonationCategories, getSuggestedAmounts } from "../services/templeService";
+import {
+  getDonationCategories,
+  getSuggestedAmounts,
+} from "../services/templeService";
+import { createDonationOrder, verifyDonationPayment } from "../services/api";
 import SectionHeading from "../components/common/SectionHeading";
 import DonationCategorySelect from "../components/donation/DonationCategorySelect";
 import AmountSelector from "../components/donation/AmountSelector";
@@ -14,7 +18,8 @@ const initialForm = { name: "", email: "", phone: "", pan: "" };
 export default function Donation() {
   const [categories, setCategories] = useState([]);
   const [amounts, setAmounts] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState("general-donation");
+  const [selectedCategoryId, setSelectedCategoryId] =
+    useState("general-donation");
   const [selectedAmount, setSelectedAmount] = useState(1101);
   const [customAmount, setCustomAmount] = useState("");
   const [form, setForm] = useState(initialForm);
@@ -22,7 +27,20 @@ export default function Donation() {
   const [recurring, setRecurring] = useState(false);
   const [wants80G, setWants80G] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+
+  // Dynamically load Razorpay checkout script
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   useEffect(() => {
     getDonationCategories().then(setCategories);
@@ -32,7 +50,12 @@ export default function Donation() {
   const finalAmount = customAmount ? Number(customAmount) : selectedAmount;
   const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
 
-  const handleFormChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  const handleFormChange = (e) => {
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    if (errors[e.target.name]) {
+      setErrors((prev) => ({ ...prev, [e.target.name]: null }));
+    }
+  };
 
   const handleSelectAmount = (amt) => {
     setSelectedAmount(amt);
@@ -42,30 +65,138 @@ export default function Donation() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!finalAmount || finalAmount <= 0) return;
+
     setSubmitting(true);
-    // Will POST to /api/donations (creating a Razorpay order) once the Laravel backend is connected.
-    await new Promise((res) => setTimeout(res, 1000));
-    setSubmitting(false);
-    setSubmitted(true);
+    setErrors({});
+
+    const donationPayload = {
+      amount: finalAmount,
+      category_id: selectedCategoryId,
+    };
+
+    try {
+      const orderRes = await createDonationOrder(donationPayload);
+
+      if (!orderRes.status) {
+        throw new Error(orderRes.message || "Failed to initialize payment.");
+      }
+
+      const options = {
+        key: orderRes.key,
+        amount: orderRes.amount,
+        currency: orderRes.currency,
+        name: "Shree Sidhh Rudreshwar Mahadev Temple Trust",
+        description: `Donation - ${selectedCategory?.title || "General Donation"}`,
+        order_id: orderRes.razorpay_order_id,
+        prefill: {
+          name: form.name || "Donor",
+          email: form.email,
+          contact: form.phone,
+        },
+        theme: {
+          color: "#d97706",
+        },
+        handler: async function (response) {
+          try {
+            const verifyPayload = {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              amount: finalAmount,
+              category_id: selectedCategoryId,
+              phone: form.phone,
+              email: form.email,
+              name: form.name,
+              pan: form.pan,
+              anonymous,
+              recurring,
+              wants80G,
+            };
+
+            const verifyRes = await verifyDonationPayment(verifyPayload);
+
+            if (verifyRes?.status) {
+              setSubmitted(true);
+            } else {
+              setErrors({
+                submit:
+                  verifyRes?.message ||
+                  "Payment verification failed. Please contact support.",
+              });
+            }
+          } catch (err) {
+            setErrors({
+              submit:
+                err.response?.data?.message ||
+                "Payment verification failed. Please contact support.",
+            });
+          } finally {
+            setSubmitting(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setSubmitting(false);
+          },
+        },
+      };
+
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.on("payment.failed", function (response) {
+        setSubmitting(false);
+        setErrors({
+          submit:
+            response.error.description || "Payment failed. Please try again.",
+        });
+      });
+
+      razorpayInstance.open();
+    } catch (err) {
+      setSubmitting(false);
+      if (err.response?.status === 422) {
+        setErrors(err.response.data.errors || {});
+      } else {
+        setErrors({
+          submit:
+            err.response?.data?.message ||
+            err.message ||
+            "Failed to initiate payment. Please try again.",
+        });
+      }
+    }
   };
 
   if (submitted) {
     return (
       <section className="section donation-success-section">
         <div className="container-xl">
-          <motion.div className="donation-success" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div
+            className="donation-success"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <FiCheckCircle size={52} color="var(--gold)" />
-            <h2 className="section-heading" style={{ marginTop: 16 }}>Thank You for Your Generosity</h2>
+            <h2 className="section-heading" style={{ marginTop: 16 }}>
+              Thank You for Your Generosity
+            </h2>
             <p style={{ maxWidth: 520, margin: "12px auto 8px" }}>
-              Your donation of <strong>₹{finalAmount.toLocaleString("en-IN")}</strong> towards{" "}
-              <strong>{selectedCategory?.title || "General Donation"}</strong> has been recorded.
-              {wants80G && " An 80G tax receipt will be emailed to you shortly."}
+              Your donation of{" "}
+              <strong>₹{finalAmount.toLocaleString("en-IN")}</strong> towards{" "}
+              <strong>{selectedCategory?.title || "General Donation"}</strong>{" "}
+              has been recorded.
+              {wants80G &&
+                " An 80G tax receipt will be emailed to you shortly."}
               {recurring && " Your monthly recurring donation has been set up."}
             </p>
             <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
               A confirmation has been sent to {form.email || "your email"}.
             </p>
-            <button className="btn-temple btn-navy-outline" style={{ marginTop: 20 }} onClick={() => setSubmitted(false)}>
+            <button
+              className="btn-temple btn-navy-outline"
+              style={{ marginTop: 20 }}
+              onClick={() => setSubmitted(false)}
+            >
               Make Another Donation
             </button>
           </motion.div>
@@ -76,28 +207,59 @@ export default function Donation() {
 
   return (
     <>
-      <section className="page-banner" style={{ backgroundImage: `url(${donationBanner})` }}>
+      <section
+        className="page-banner"
+        style={{ backgroundImage: `url(${donationBanner})` }}
+      >
         <div className="page-banner-overlay" />
         <div className="container-xl page-banner-content">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="eyebrow" style={{ color: "var(--gold-light)" }}>Give With Purpose</span>
-            <h1 className="section-heading" style={{ color: "var(--text-on-navy)" }}>Make a Donation</h1>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="eyebrow" style={{ color: "var(--gold-light)" }}>
+              Give With Purpose
+            </span>
+            <h1
+              className="section-heading"
+              style={{ color: "var(--text-on-navy)" }}
+            >
+              Make a Donation
+            </h1>
             <p style={{ color: "rgba(244,239,225,0.82)", maxWidth: 560 }}>
-              Every contribution — big or small — sustains the temple's rituals and the trust's charitable work.
+              Every contribution — big or small — sustains the temple's rituals
+              and the trust's charitable work.
             </p>
           </motion.div>
         </div>
       </section>
 
       <section className="section">
-        <form onSubmit={handleSubmit} className="container-xl donation-layout">
+        <form
+          onSubmit={handleSubmit}
+          className="container-xl donation-layout"
+          noValidate
+        >
           <div className="donation-main-col">
-            <SectionHeading align="left" eyebrow="Step 1" title="Choose a Category" />
-            <DonationCategorySelect categories={categories} selectedId={selectedCategoryId} onSelect={setSelectedCategoryId} />
+            <SectionHeading
+              align="left"
+              eyebrow="Step 1"
+              title="Choose a Category"
+            />
+            <DonationCategorySelect
+              categories={categories}
+              selectedId={selectedCategoryId}
+              onSelect={setSelectedCategoryId}
+            />
 
             <div style={{ height: 48 }} />
 
-            <SectionHeading align="left" eyebrow="Step 2" title="Choose an Amount" />
+            <SectionHeading
+              align="left"
+              eyebrow="Step 2"
+              title="Choose an Amount"
+            />
             <AmountSelector
               amounts={amounts}
               selectedAmount={selectedAmount}
@@ -108,7 +270,11 @@ export default function Donation() {
 
             <div style={{ height: 48 }} />
 
-            <SectionHeading align="left" eyebrow="Step 3" title="Your Details" />
+            <SectionHeading
+              align="left"
+              eyebrow="Step 3"
+              title="Your Details"
+            />
             <DonorDetailsForm
               form={form}
               onChange={handleFormChange}
@@ -118,6 +284,7 @@ export default function Donation() {
               onRecurringChange={setRecurring}
               wants80G={wants80G}
               onWants80GChange={setWants80G}
+              errors={errors}
             />
           </div>
 
@@ -135,7 +302,9 @@ export default function Donation() {
             </div>
             <div className="summary-row">
               <span>Amount</span>
-              <strong className="summary-amount">₹{finalAmount ? finalAmount.toLocaleString("en-IN") : "0"}</strong>
+              <strong className="summary-amount">
+                ₹{finalAmount ? finalAmount.toLocaleString("en-IN") : "0"}
+              </strong>
             </div>
             <div className="summary-row">
               <span>Frequency</span>
@@ -143,14 +312,40 @@ export default function Donation() {
             </div>
             <div className="summary-row">
               <span>Receipt</span>
-              <strong>{wants80G ? "80G Tax Receipt" : "Standard Receipt"}</strong>
+              <strong>
+                {wants80G ? "80G Tax Receipt" : "Standard Receipt"}
+              </strong>
             </div>
 
-            <button type="submit" className="btn-temple btn-primary-gold form-submit-btn mt-2" disabled={submitting || !finalAmount}>
-              <FiHeart /> {submitting ? "Processing..." : `Donate ₹${finalAmount ? finalAmount.toLocaleString("en-IN") : "0"}`}
+            {errors.submit && (
+              <div
+                style={{
+                  background: "#fee2e2",
+                  color: "#991b1b",
+                  padding: "0.5rem 0.75rem",
+                  borderRadius: "6px",
+                  fontSize: "0.85rem",
+                  marginTop: "0.75rem",
+                }}
+              >
+                {errors.submit}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="btn-temple btn-primary-gold form-submit-btn mt-2"
+              disabled={submitting || !finalAmount}
+            >
+              <FiHeart />{" "}
+              {submitting
+                ? "Processing..."
+                : `Donate ₹${finalAmount ? finalAmount.toLocaleString("en-IN") : "0"}`}
             </button>
 
-            <p className="donation-secure-note"><FiShield size={13} /> Secure payment processing via Razorpay</p>
+            <p className="donation-secure-note">
+              <FiShield size={13} /> Secure payment processing via Razorpay
+            </p>
           </motion.div>
         </form>
       </section>

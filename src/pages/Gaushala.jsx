@@ -15,6 +15,8 @@ import {
 } from "../services/templeService";
 import { ROUTE_PATHS } from "../routes/routePaths";
 import SectionHeading from "../components/common/SectionHeading";
+import { FiArrowRight } from "react-icons/fi";
+
 import InlineStatsRow from "../components/common/InlineStatsRow";
 import SponsorshipCard from "../components/gaushala/SponsorshipCard";
 import "./Gaushala.css";
@@ -116,8 +118,14 @@ export default function Gaushala() {
         </div>
       </section>
 
+      <div style={{ textAlign: "center", marginTop: 40 , marginBottom: 40}}>
+        <Link to={ROUTE_PATHS.DONATION} className="btn-temple btn-primary-gold">
+          View All Donation Categories  <FiArrowRight />
+        </Link>
+      </div>
+
       {/* Sponsorship plans */}
-      <section className="section">
+      {/* <section className="section">
         <div className="container-xl">
           <SectionHeading
             eyebrow="Get Involved"
@@ -130,7 +138,7 @@ export default function Gaushala() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Volunteer CTA */}
       {/* <section className="section gaushala-cta">

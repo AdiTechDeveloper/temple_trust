@@ -12,6 +12,8 @@ import {
 } from "../services/templeService";
 import SectionHeading from "../components/common/SectionHeading";
 import InlineStatsRow from "../components/common/InlineStatsRow";
+import { FiArrowRight } from "react-icons/fi";
+
 import SponsorshipCard from "../components/gaushala/SponsorshipCard";
 import "./Bhojanshala.css";
 
@@ -150,8 +152,14 @@ export default function Bhojanshala() {
         </div>
       </section>
 
+       <div style={{ textAlign: "center", marginTop: 40 , marginBottom: 40}}>
+        <Link to={ROUTE_PATHS.DONATION} className="btn-temple btn-primary-gold">
+          View All Donation Categories  <FiArrowRight />
+        </Link>
+      </div>
+
       {/* Sponsorship Plans Section */}
-      <section className="section bhojanshala-sponsorship-section">
+      {/* <section className="section bhojanshala-sponsorship-section">
         <div className="container-xl">
           <SectionHeading
             eyebrow="Sponsor a Meal"
@@ -169,7 +177,7 @@ export default function Bhojanshala() {
             </div>
           )}
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

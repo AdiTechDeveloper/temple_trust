@@ -10,6 +10,9 @@ import "./HomeVideos.css";
 
 const STORAGE_URL = "http://127.0.0.1:8000/storage";
 
+// const STORAGE_URL = "https://shreerudreshwar-backend.theaditech.com/storage";
+
+
 export default function HomeVideos() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);

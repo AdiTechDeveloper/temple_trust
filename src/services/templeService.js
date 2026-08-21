@@ -90,35 +90,26 @@ export const submitMemberUpdate = (payload) => {
 export const getVideos = async () => {
   try {
     const response = await api.get("/videos");
-
-        // console.log("VIDEO API RESPONSE:", response.data);
     const videos = response.data.videos || response.data.video || [];
-
     return Array.isArray(videos) ? videos : [];
   } catch (error) {
     console.error("Failed to fetch videos:", error);
     console.error("Status:", error.response?.status);
     console.error("Data:", error.response?.data);
-
-        // console.log("VIDEOS SENT TO COMPONENT:", videos);
-
-        return Array.isArray(videos) ? videos : [];
-
-    } 
-   
+    return [];
   }
+};
 
 export const getVideoBySlug = async (slug) => {
   try {
     const response = await api.get(`/videos/${slug}`);
-
-        return response.data.video || null;
-    } catch (error) {
-        // console.error("Failed to fetch video:", error);
-        throw error;
-    }
-    return response.data.video || null;
+    return response.data.videos || null;   // 👈 fixed: "videos" matches backend key
+  } catch (error) {
+    console.error("Failed to fetch video:", error);
+    throw error;
   }
+};
+
 
 export const getGallery = async () => {
     try {

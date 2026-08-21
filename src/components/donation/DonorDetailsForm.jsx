@@ -1,4 +1,4 @@
-import { FiUser, FiMail, FiPhone, FiCreditCard } from "react-icons/fi";
+import { FiUser, FiPhone, FiCreditCard, FiCalendar } from "react-icons/fi";
 
 export default function DonorDetailsForm({ form, onChange, anonymous, onAnonymousChange, recurring, onRecurringChange, wants80G, onWants80GChange }) {
   return (
@@ -15,12 +15,12 @@ export default function DonorDetailsForm({ form, onChange, anonymous, onAnonymou
 
       <div className="form-row">
         <div className="form-field">
-          <label htmlFor="donorEmail"><FiMail size={14} /> Email</label>
-          <input id="donorEmail" name="email" type="email" value={form.email} onChange={onChange} placeholder="you@example.com" required />
+          <label htmlFor="donorDob"><FiCalendar size={14} /> Date of Birth</label>
+          <input id="donorDob" name="dob" type="text" value={form.dob} onChange={onChange} placeholder="DD-MM-YYYY" maxLength={10} required />
         </div>
         <div className="form-field">
           <label htmlFor="donorPhone"><FiPhone size={14} /> Phone</label>
-          <input id="donorPhone" name="phone" type="tel" value={form.phone} onChange={onChange} placeholder="+91 98765 43210" required />
+          <input id="donorPhone" name="phone" type="number" value={form.phone} onChange={onChange} placeholder="+91 98765 43210" required />
         </div>
       </div>
 

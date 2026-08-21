@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FiHeart, FiUsers } from "react-icons/fi";
-import { GiCow } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import gaushalaBanner from "../assets/images/home/gaushala.avif";
 import gaushalaAbout from "../assets/images/gaushala/cow-1.jpg";
@@ -16,9 +14,7 @@ import {
 import { ROUTE_PATHS } from "../routes/routePaths";
 import SectionHeading from "../components/common/SectionHeading";
 import { FiArrowRight } from "react-icons/fi";
-
 import InlineStatsRow from "../components/common/InlineStatsRow";
-import SponsorshipCard from "../components/gaushala/SponsorshipCard";
 import "./Gaushala.css";
 
 const cowGalleryImages = [cow1, cow2, cow3, cow4];

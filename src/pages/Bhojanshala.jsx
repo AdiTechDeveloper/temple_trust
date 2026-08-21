@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import bhojanshalaBanner from "../assets/images/bhojanshala/bhojanshala-banner.png";
 import bhojanshalaAbout from "../assets/images/bhojanshala/bhojanshala-about.jpg";
 import kitchen1 from "../assets/images/bhojanshala/kitchen-1.jpeg";
 import kitchen2 from "../assets/images/bhojanshala/kitchen-2.avif";
 import kitchen3 from "../assets/images/bhojanshala/kitchen-3.avif";
 import kitchen4 from "../assets/images/bhojanshala/kitchen-4.avif";
+import { ROUTE_PATHS } from "../routes/routePaths";
 import {
   getBhojanshalaStats,
   getMealSponsorshipPlans,
@@ -152,9 +154,9 @@ export default function Bhojanshala() {
         </div>
       </section>
 
-       <div style={{ textAlign: "center", marginTop: 40 , marginBottom: 40}}>
+      <div style={{ textAlign: "center", marginTop: 40, marginBottom: 40 }}>
         <Link to={ROUTE_PATHS.DONATION} className="btn-temple btn-primary-gold">
-          View All Donation Categories  <FiArrowRight />
+          View All Donation Categories <FiArrowRight />
         </Link>
       </div>
 
